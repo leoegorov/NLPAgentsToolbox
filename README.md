@@ -23,3 +23,7 @@ chmod 755 *.py
 ./lsbio.py
 ./rmbio.py -h
 ```
+
+### Example: Find and remove all Florida citizens from database
+
+``./lsbio.py | grep "Florida" | cut -c1 | xargs -n1 ./rmbio.py -i``
