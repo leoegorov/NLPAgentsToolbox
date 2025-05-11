@@ -27,3 +27,16 @@ chmod 755 *.py
 ### Example: Find and remove all Florida citizens from database
 
 ``./lsbio.py | grep "Florida" | cut -c1 | xargs -n1 ./rmbio.py -i``
+
+**TODO: ``get_table_field.py`` instead of grep cut
+
+## Data flow
+
+| Stage | Existing columns |
+|-|-|
+| 01-mkbio | |
+| 12-name |  ``ID`` ``AGE`` ``GENDER`` ``STATE`` ``INCOME`` ``RACE`` ``EDU`` ``OCCUPATION`` |
+| 13-religion | ++ ``FIRST_NAME`` ``MIDDLE_NAME`` ``LAST_NAME`` |
+| 14.. | ++ ``RELIGION`` |
+| 90 | all non-LLM generated fields |
+| 99 | all except final prompt for this person |
