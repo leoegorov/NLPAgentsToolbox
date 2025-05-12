@@ -168,7 +168,7 @@ def save_person_to_db(traits):
     conn.commit()
     conn.close()
 
-def main():
+def mkbioMain():
     parser = argparse.ArgumentParser(
         description='mkbio – create an American and call make them a juror'
     )
@@ -196,11 +196,14 @@ def main():
     print("Fetching U.S. occupation data by gender...")
     occupationPopWeight= fetch_pop_occupation(gender)
     occupation= select_name_weighted(occupationPopWeight)
-    traits= [age, gender, state_name, income, race, edu, occupation]
+    traits = [age, gender, state_name, income, race, edu, occupation]
     print(traits)
-    save_person_to_db(traits)
+
+    return traits
+    #save_person_to_db(traits)
 
     # print(f"Installed as juror: Age={age}, Gender={gender}, State={state_name}")
 
+
 if __name__ == '__main__':
-    main()
+    mkbioMain()
