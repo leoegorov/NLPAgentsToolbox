@@ -2,3 +2,4 @@ juror.db
 todo.txt
 test.ipynb
 api_key
+request_cache.sqlite
