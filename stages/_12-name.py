@@ -3,8 +3,6 @@
 # 3. Ask interactively for first and last name
 # 4. Append to table
 
-
-
 import pandas as pd
 import random
 
@@ -13,17 +11,16 @@ def load_name_file(path):
     df = pd.read_csv(path)
     return df['Name'].tolist(), df['Probability'].tolist()
 
-
 # Generate a full name based on gender
 def generate_full_name(gender):
     if gender == 'Male':
-        first_names, first_probs = load_name_file('namesCSV/top_200_male_names.csv')
+        first_names, first_probs = load_name_file('utils/namesCSV/top_200_male_names.csv')
     elif gender == 'Female':
-        first_names, first_probs = load_name_file('namesCSV/top_200_female_names.csv')
+        first_names, first_probs = load_name_file('utils/namesCSV/top_200_female_names.csv')
     else:
         raise ValueError("Gender must be 'male' or 'female'")
 
-    last_names, last_probs = load_name_file('namesCSV/top_200_last_names.csv')
+    last_names, last_probs = load_name_file('utils/namesCSV/top_200_last_names.csv')
 
     first = random.choices(first_names, weights=first_probs, k=1)[0]
     last = random.choices(last_names, weights=last_probs, k=1)[0]
@@ -46,10 +43,6 @@ def getFullName(gender):
             else:
                 print("Please enter a full name!")
 
-
-
-
-
 def addName(bioWithoutName):
     gender = bioWithoutName[1]
     fullName = getFullName(gender)
@@ -57,10 +50,3 @@ def addName(bioWithoutName):
     bioWithName = bioWithoutName + [splitName[0], splitName[1]]
     print(bioWithName)
     return bioWithName
-
-
-
-
-
-
-
