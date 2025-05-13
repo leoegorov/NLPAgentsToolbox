@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from DBController import check_environment_variables, save_person_to_db
 from mkbio_01 import mkbioMain
 from name_12 import addName

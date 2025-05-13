@@ -3,6 +3,16 @@
 This is a toolbox for creating realistic NLP social agent 
 personalities suitable for juror duty in the US.
 
+## Installation and dependencies
+
+Some python libs require a virtual environment in recent macos versions 
+```
+cd NLPAgentsToolbox
+python3 -m venv .
+source bin/activate
+pip3 install requests-cache pandas
+```
+
 ## Environment variables
 
 Make sure to export these shared variables before invoking commands. 
