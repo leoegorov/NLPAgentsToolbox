@@ -1,3 +1,4 @@
+from DBController import check_environment_variables, save_person_to_db
 from mkbio_01 import mkbioMain
 from name_12 import addName
 from religion_13 import addReligion
@@ -14,12 +15,12 @@ from religion_13 import addReligion
 
 
 if __name__ == '__main__':
+
+    check_environment_variables()
     bioWithoutName = mkbioMain()
-    #bioWithoutName = ['sad', 'Female']
     bioWithName = addName(bioWithoutName)
     bioWithReligion = addReligion(bioWithName)
-
-    #TODO save the full bio in DB
+    save_person_to_db(bioWithReligion)
 
 
 

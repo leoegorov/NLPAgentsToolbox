@@ -37,7 +37,7 @@ def getFullName(gender):
         print(f"\nSuggested name: {full_name}")
         choice = input("Accept (a), New generated suggestion (n), or Enter name of you own (e)? ").strip().lower()
         if choice == 'a':
-            print(f"✅ Name accepted: {full_name}")
+            print(f"Name accepted: {full_name}")
             return full_name
         elif choice == 'e':
             name = input("Enter full name here: ")

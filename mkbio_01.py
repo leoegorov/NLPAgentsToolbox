@@ -7,13 +7,13 @@ import sys
 import argparse
 
 # fallback variables
-DATABASE_FILE = os.environ.get('DATABASE_FILE', 'juror.db')
+# DATABASE_FILE = os.environ.get('DATABASE_FILE', 'juror.db')
 API_CENSUS  = os.environ.get('API_CENSUS', 'https://api.census.gov/data/2020/dec/pl')
 # API_KEY = None  # Optional: Replace with your key like 'your_api_key_here'
 
-def check_environment_variables():
-    if 'DATABASE_FILE' not in os.environ:
-        print(f"Warning: DATABASE_FILE location is not set. Defaulting to {os.getcwd()}/{DATABASE_FILE}", file=sys.stderr)
+# def check_environment_variables():
+#     if 'DATABASE_FILE' not in os.environ:
+#         print(f"Warning: DATABASE_FILE location is not set. Defaulting to {os.getcwd()}/{DATABASE_FILE}", file=sys.stderr)
 
 # Get list of U.S. states and populations
 def fetch_state_populations():
@@ -148,25 +148,25 @@ def select_name_weighted(nameWeight):
     return names[chosen_index]
 
 # Initialize and write to SQLite
-def save_person_to_db(traits):
-    conn = sqlite3.connect(DATABASE_FILE)
-    cur = conn.cursor()
-    #[gender, age, state_name, income, race, edu, occupation]
-    cur.execute('''
-        CREATE TABLE IF NOT EXISTS person (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            age INTEGER,
-            gender TEXT,
-            state TEXT,
-            income TEXT,
-            race TEXT,
-            edu TEXT,
-            occupation TEXT
-        )
-    ''')
-    cur.execute('INSERT INTO person (age, gender, state, income, race, edu, occupation) VALUES (?, ?, ?, ?, ?, ?, ?)', traits)
-    conn.commit()
-    conn.close()
+# def save_person_to_db(traits):
+#     conn = sqlite3.connect(DATABASE_FILE)
+#     cur = conn.cursor()
+#     #[gender, age, state_name, income, race, edu, occupation]
+#     cur.execute('''
+#         CREATE TABLE IF NOT EXISTS person (
+#             id INTEGER PRIMARY KEY AUTOINCREMENT,
+#             age INTEGER,
+#             gender TEXT,
+#             state TEXT,
+#             income TEXT,
+#             race TEXT,
+#             edu TEXT,
+#             occupation TEXT
+#         )
+#     ''')
+#     cur.execute('INSERT INTO person (age, gender, state, income, race, edu, occupation) VALUES (?, ?, ?, ?, ?, ?, ?)', traits)
+#     conn.commit()
+#     conn.close()
 
 def mkbioMain():
     parser = argparse.ArgumentParser(
@@ -175,7 +175,7 @@ def mkbioMain():
     parser.add_argument('--version', action='version', version='mkbio v0.0')
     args = parser.parse_args()
 
-    check_environment_variables()
+    # check_environment_variables()
     print("Fetching U.S. population data by state...")
     states = fetch_state_populations()
     print("Fetching U.S. population data by state...")
