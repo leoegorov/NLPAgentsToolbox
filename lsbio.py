@@ -7,11 +7,6 @@ import argparse
 # fallback variables
 DATABASE_FILE = os.environ.get('DATABASE_FILE', 'juror.db')
 
-def format_list(dataList):
-    lenRestrict= [3, 15, 7, 15, 20, 20, 20, 20]
-    dataList= [f"{dataList[i]:<{lenRestrict[i]}}" for i in range(len(dataList))]
-    return dataList
-
 def check_environment_variables():
     if 'DATABASE_FILE' not in os.environ:
         print(f"Warning: DATABASE_FILE location is not set. Defaulting to {os.getcwd()}/{DATABASE_FILE}", file=sys.stderr)
@@ -25,19 +20,17 @@ def print_database_contents():
     cur = conn.cursor()
 
     try:
-        cur.execute('SELECT * FROM person')
+        cur.execute('SELECT id, age, gender, state FROM person')
         rows = cur.fetchall()
-        header= format_list([i[0] for i in cur.description])
+
         if not rows:
             print("No entries found in the 'person' table.", file=sys.stderr)
             sys.exit(1)
 
-        # print(f"{'ID':<5} {'Age':<5} {'Gender':<8} {'State'}")
-        print("".join(header))
-        print("-" * 90)
+        print(f"{'ID':<5} {'Age':<5} {'Gender':<8} {'State'}")
+        print("-" * 30)
         for row in rows:
-            print("".join(format_list(row)))
-            # print(f"{row[0]:<5} {row[1]:<5} {row[2]:<8} {row[3]}")
+            print(f"{row[0]:<5} {row[1]:<5} {row[2]:<8} {row[3]}")
     except sqlite3.OperationalError as e:
         print(f"Error: {e}", file=sys.stderr)
         sys.exit(1)
