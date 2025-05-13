@@ -38,8 +38,6 @@ chmod 755 *.py
 
 ``./lsbio.py | grep "Florida" | cut -c1 | xargs -n1 ./rmbio.py -i``
 
-**TODO: ``get_table_field.py`` instead of grep cut
-
 ## Data flow
 
 | Stage | Existing columns |
