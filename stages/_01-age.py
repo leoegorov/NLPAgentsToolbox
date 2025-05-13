@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
-import requests_cache
 from datetime import timedelta
 import random
 import sqlite3
 import os
 import sys
 import argparse
+import requests_cache # type: ignore
+# from stages.utils.dbcontroller import check_environment_variables, save_person_to_db
+from stages.utils.dbcontroller import save_person_to_db
 
-# fallback variables
-# DATABASE_FILE = os.environ.get('DATABASE_FILE', 'juror.db')
-API_CENSUS  = os.environ.get('API_CENSUS', 'https://api.census.gov/data/2020/dec/pl')
-# API_KEY = None  # Optional: Replace with your key like 'your_api_key_here'
+API_CENSUS = os.environ['API_CENSUS']
+DATABASE_FILE = os.environ['DATABASE_FILE']
 
 # def check_environment_variables():
 #     if 'DATABASE_FILE' not in os.environ:
@@ -169,7 +169,7 @@ def select_name_weighted(nameWeight):
 #     conn.commit()
 #     conn.close()
 
-def mkbioMain():
+def main():
     parser = argparse.ArgumentParser(
         description='mkbio – create an American and call make them a juror'
     )
@@ -179,7 +179,8 @@ def mkbioMain():
     # cache visited website for better performance
     session = requests_cache.CachedSession('request_cache', expire_after=timedelta(hours=2))
 
-    #check_environment_variables()
+    # check_environment_variables()
+
     print("Fetching U.S. population data by state...")
     states = fetch_state_populations(session)
     print("Fetching U.S. population data by state...")
@@ -203,10 +204,9 @@ def mkbioMain():
     traits = [age, gender, state_name, income, race, edu, occupation]
     print(traits)
 
-    return traits
-    #save_person_to_db(traits)
-
-    # print(f"Installed as juror: Age={age}, Gender={gender}, State={state_name}")
+    # return traits
+    save_person_to_db(traits)
+    print(f"Installed as juror: Age={age}, Gender={gender}, State={state_name}")
 
 if __name__ == '__main__':
-    mkbioMain()
+    main()
