@@ -176,7 +176,10 @@ def mkbioMain():
     parser.add_argument('--version', action='version', version='mkbio v0.0')
     args = parser.parse_args()
 
-    check_environment_variables()
+    # cache visited website for better performance
+    session = requests_cache.CachedSession('request_cache', expire_after=timedelta(hours=2))
+
+    #check_environment_variables()
     print("Fetching U.S. population data by state...")
     states = fetch_state_populations(session)
     print("Fetching U.S. population data by state...")
