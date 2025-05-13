@@ -23,7 +23,7 @@ if __name__ == '__main__':
     import re
     import importlib.util
 
-    # Fallback global variables
+    # Set fallback variables
     os.environ.setdefault('DATABASE_FILE', 'build/juror.db')
     os.environ.setdefault('API_CENSUS', 'https://api.census.gov/data/2020/dec/pl')
     # API_KEY = None  # Optional: Replace with your key like 'your_api_key_here'

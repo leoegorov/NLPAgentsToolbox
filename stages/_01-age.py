@@ -7,7 +7,7 @@ import sys
 import argparse
 import requests_cache # type: ignore
 # from stages.utils.dbcontroller import check_environment_variables, save_person_to_db
-from stages.utils.dbcontroller import save_person_to_db
+from stages.utils.dbcontroller import update_db
 
 API_CENSUS = os.environ['API_CENSUS']
 DATABASE_FILE = os.environ['DATABASE_FILE']
@@ -202,10 +202,12 @@ def main():
     occupationPopWeight= fetch_pop_occupation(gender, session)
     occupation= select_name_weighted(occupationPopWeight)
     traits = [age, gender, state_name, income, race, edu, occupation]
-    print(traits)
+    # print(traits)
 
     # return traits
-    save_person_to_db(traits)
+    update_db("AGE", age)
+    update_db("GENDER", gender)
+    update_db("STATE", state_name)
     print(f"Installed as juror: Age={age}, Gender={gender}, State={state_name}")
 
 if __name__ == '__main__':

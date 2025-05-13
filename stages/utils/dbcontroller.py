@@ -8,26 +8,40 @@ DATABASE_FILE = os.environ.get('DATABASE_FILE', 'juror.db')
 #     if 'DATABASE_FILE' not in os.environ:
 #         print(f"Warning: DATABASE_FILE location is not set. Defaulting to {os.getcwd()}/{DATABASE_FILE}", file=sys.stderr)
 
-def save_person_to_db(traits):
+def update_db(column, value, id=None):
     conn = sqlite3.connect(DATABASE_FILE)
     cur = conn.cursor()
-    #[gender, age, state_name, income, race, edu, occupation]
+
+    # Ensure the table exists
     cur.execute('''
         CREATE TABLE IF NOT EXISTS person (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            age INTEGER,
-            gender TEXT,
-            state TEXT,
-            income TEXT,
-            race TEXT,
-            edu TEXT,
-            occupation TEXT,
-            first_name TEXT,
-            last_name TEXT,
-            religion TEXT
+            id INTEGER PRIMARY KEY AUTOINCREMENT
         )
     ''')
-    cur.execute('INSERT INTO person (age, gender, state, income, race, edu, occupation,'
-                ' first_name, last_name, religion) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', traits)
+
+    # Check if column exists
+    cur.execute("PRAGMA table_info(person)")
+    columns = [row[1] for row in cur.fetchall()]
+    if column not in columns:
+        cur.execute(f'ALTER TABLE person ADD COLUMN {column} TEXT')
+
+    # Determine id if not given
+    if id is None:
+        cur.execute('SELECT MAX(id) FROM person')
+        result = cur.fetchone()
+        id = result[0]
+        if id is None:
+            # No entries exist yet; insert a new row first
+            cur.execute('INSERT INTO person DEFAULT VALUES')
+            id = cur.lastrowid
+
+    # Check if row with given id exists
+    cur.execute('SELECT 1 FROM person WHERE id = ?', (id,))
+    if cur.fetchone() is None:
+        cur.execute('INSERT INTO person (id) VALUES (?)', (id,))
+
+    # Update the value
+    cur.execute(f'UPDATE person SET {column} = ? WHERE id = ?', (value, id))
+
     conn.commit()
     conn.close()

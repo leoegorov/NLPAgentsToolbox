@@ -4,8 +4,9 @@ import os
 import sys
 import argparse
 
-# fallback variables
-DATABASE_FILE = os.environ.get('DATABASE_FILE', 'juror.db')
+# Set fallback variables
+os.environ.setdefault('DATABASE_FILE', 'build/juror.db')
+DATABASE_FILE = os.environ['DATABASE_FILE']
 
 def check_environment_variables():
     if 'DATABASE_FILE' not in os.environ:
