@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
-
-
+import os
+import re
+import sqlite3
+import importlib.util
 
 # Create complete person from scratch interactively
 # 1. mkbio
@@ -9,19 +11,13 @@
 # 4. generateprompt
 
 # if __name__ == '__main__':
-
 #     check_environment_variables()
 #     bioWithoutName = mkbioMain()
 #     bioWithName = addName(bioWithoutName)
 #     bioWithReligion = addReligion(bioWithName)
 #     save_person_to_db(bioWithReligion)
 
-
-
 if __name__ == '__main__':
-    import os
-    import re
-    import importlib.util
 
     # Set fallback variables
     os.environ.setdefault('DATABASE_FILE', 'build/juror.db')
@@ -35,6 +31,18 @@ if __name__ == '__main__':
         match = re.match(r'_([0-9]{2})-.*\.py$', filename)
         if match:
             stage_files.append((int(match.group(1)), filename))
+
+    DATABASE_FILE = os.environ['DATABASE_FILE']
+
+    conn = sqlite3.connect(DATABASE_FILE)
+    cur = conn.cursor()
+    cur.execute('CREATE TABLE IF NOT EXISTS person (id INTEGER PRIMARY KEY AUTOINCREMENT)')
+    cur.execute('SELECT MAX(id) FROM person')
+    result = cur.fetchone()
+    new_id = (result[0] or 0) + 1
+    cur.execute('INSERT INTO person (id) VALUES (?)', (new_id,))
+    conn.commit()
+    conn.close()
 
     for _, filename in sorted(stage_files):
         module_path = os.path.join(stages_dir, filename)

@@ -201,7 +201,7 @@ def main():
     print("Fetching U.S. occupation data by gender...")
     occupationPopWeight= fetch_pop_occupation(gender, session)
     occupation= select_name_weighted(occupationPopWeight)
-    traits = [age, gender, state_name, income, race, edu, occupation]
+    # traits = [age, gender, state_name, income, race, edu, occupation]
     # print(traits)
 
     # return traits
