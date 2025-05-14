@@ -4,19 +4,6 @@ import re
 import sqlite3
 import importlib.util
 
-# Create complete person from scratch interactively
-# 1. mkbio
-# 2. namebio
-# 3. addsigmemory
-# 4. generateprompt
-
-# if __name__ == '__main__':
-#     check_environment_variables()
-#     bioWithoutName = mkbioMain()
-#     bioWithName = addName(bioWithoutName)
-#     bioWithReligion = addReligion(bioWithName)
-#     save_person_to_db(bioWithReligion)
-
 if __name__ == '__main__':
 
     # Set fallback variables
@@ -55,4 +42,4 @@ if __name__ == '__main__':
         if hasattr(stage_module, 'main'):
             stage_module.main()
         else:
-            print(f"Warning: {filename} has no main() function.")
+            print(f"\n\033[93mWarning: {filename} has no main() function.\033[0m")

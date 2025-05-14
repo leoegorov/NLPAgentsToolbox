@@ -33,8 +33,8 @@ def getFullName(gender):
     while True:
         full_name = generate_full_name(gender)
         print(f"Suggested name: {full_name}")
-        choice = input("Accept (a), New generated suggestion (n), or Enter name of you own (e)? ").strip().lower()
-        if choice == 'a':
+        choice = input("Accept (A), new generated suggestion (n) or enter name of your own (e)? ").strip() or 'A'
+        if choice == 'A':
             print(f"Name accepted: {full_name}")
             return full_name
         elif choice == 'e':
@@ -45,8 +45,9 @@ def getFullName(gender):
                 print("Please enter a full name!")
 
 def main():
+    print("\n")
     gender = get_val('GENDER')
     fullName = getFullName(gender)
     splitName = fullName.split(' ')
-    update_db('first_name', splitName[0])
-    update_db('last_name', splitName[1])
+    update_db('FIRST_NAME', splitName[0])
+    update_db('LAST_NAME', splitName[1])

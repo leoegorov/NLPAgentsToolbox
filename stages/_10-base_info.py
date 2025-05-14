@@ -179,8 +179,8 @@ def main():
     # cache visited website for better performance
     session = requests_cache.CachedSession('request_cache', expire_after=timedelta(hours=2))
 
-    # check_environment_variables()
-
+    print("\n")
+    
     print("Fetching U.S. population data by state...")
     states = fetch_state_populations(session)
     print("Fetching U.S. population data by state...")

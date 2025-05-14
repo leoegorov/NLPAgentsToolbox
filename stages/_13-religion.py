@@ -1,4 +1,6 @@
 import random
+from stages.utils.dbcontroller import get_val, update_db
+
 # List of religions with their probabilities
 RELIGIONS = [
     ("Protestant", 0.40),
@@ -21,7 +23,7 @@ def suggest_religion():
     return random.choices(religions, weights=probs, k=1)[0]
 
 def print_religion_list():
-    print("\nAvailable religions:")
+    print("Available religions:")
     for i, (religion, prob) in enumerate(RELIGIONS, start=1):
         print(f"{i}. {religion} ({round(prob * 100, 2)}%)")
     print()
@@ -30,10 +32,10 @@ def getReligion():
     while True:
         suggestion = suggest_religion()
         prob = dict(RELIGIONS)[suggestion]
-        print(f"\nSuggested religion: {suggestion} ({round(prob * 100, 2)}%)")
-        choice = input("Accept (a), New suggestion (n), or Enter your own (e)? ").strip().lower()
+        print(f"Suggested religion: {suggestion} ({round(prob * 100, 2)}%)")
+        choice = input("Accept (A), new suggestion (n), or enter your own (e)? ").strip() or 'A'
 
-        if choice == 'a':
+        if choice == 'A':
             print(f"Religion accepted: {suggestion}")
             return suggestion
         elif choice == 'e':
@@ -50,9 +52,6 @@ def getReligion():
                 print("Please enter a valid number.")
         # otherwise loop again
 
-
-
-def addReligion(bioWithoutReligion):
-    religion = getReligion()
-    return bioWithoutReligion + [religion]
-
+def main():
+    print("\n")
+    update_db('RELIGION', getReligion())
