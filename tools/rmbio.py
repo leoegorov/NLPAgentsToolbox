@@ -19,12 +19,12 @@ def main():
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument('-i', '--id', type=int, help='Remove juror by ID')
     group.add_argument('-a', '--all', action='store_true', help='Remove all jurors')
-    group.add_argument('-A', '--delete', action='store_true', help='Delete the entire database file')
+    group.add_argument('-A', '--delete-file', action='store_true', help='Delete the entire database file')
 
     args = parser.parse_args()
     check_environment_variables()
 
-    if args.delete:
+    if args.delete_file:
         if os.path.exists(DATABASE_FILE):
             os.remove(DATABASE_FILE)
             print(f"Database file '{DATABASE_FILE}' has been deleted.")

@@ -42,3 +42,28 @@ def update_db(column, value, id=None):
 
     conn.commit()
     conn.close()
+
+
+# Get column value for highest or specified id
+def get_val(column, id=None):
+    conn = sqlite3.connect(DATABASE_FILE)
+    cur = conn.cursor()
+
+    # Determine id if not provided
+    if id is None:
+        cur.execute('SELECT MAX(id) FROM person')
+        result = cur.fetchone()
+        if result is None or result[0] is None:
+            conn.close()
+            return None
+        id = result[0]
+
+    # Retrieve value
+    try:
+        cur.execute(f'SELECT {column} FROM person WHERE id = ?', (id,))
+        result = cur.fetchone()
+        return result[0] if result else None
+    except sqlite3.OperationalError:
+        return None
+    finally:
+        conn.close()
