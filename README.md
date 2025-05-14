@@ -22,24 +22,28 @@ individual commands.
 | VAR           | Description                | mkbio | lsbio | rmbio |
 |---------------|----------------------------|-------|-------|-------|
 | DATABASE_FILE | File path to juror.db      | req   | req   | req   |
+| EXPORT_FILE   | File path to export.json   | -     | opt   |       |
 | API_CENSUS    | Connection to US Census DB | opt   | -     | -     |
 
 ## Usage 
 
+### Install
 ```
 cd path/to/NLPAgentsToolbox
-chmod 755 *.py
+chmod -R 755 *.py
 ```
 
+### Generate juror
 ```
 ./main.py -h     
 usage: main.py [-h] [--num NUM]
 
 optional arguments:
   -h, --help  show this help message and exit
-  --num NUM   Amount of jurors to generate
+  --num NUM   Amount of jurors to generate  (WIP)
 ```
 
+### List columns, rows, all; Export JSON; Query SQL
 ```
 ./tools/lsbio.py -h
 usage: lsbio.py [-h] [--version] [-c] [-i BY_ID] [-l] [-a] [-e] [-q QUERY]
@@ -59,6 +63,7 @@ optional arguments:
                         Run a custom SQL query on the person table
 ```
 
+### Delete (all) rows or database file
 ```
  ./tools/rmbio.py -h
 usage: rmbio.py [-h] [--version] (-i ID | -a | -A)
