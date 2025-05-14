@@ -201,14 +201,24 @@ def main():
     print("Fetching U.S. occupation data by gender...")
     occupationPopWeight= fetch_pop_occupation(gender, session)
     occupation= select_name_weighted(occupationPopWeight)
-    # traits = [age, gender, state_name, income, race, edu, occupation]
-    # print(traits)
 
-    # return traits
+    # update database
     update_db("AGE", age)
     update_db("GENDER", gender)
     update_db("STATE", state_name)
-    print(f"Installed as juror: Age={age}, Gender={gender}, State={state_name}")
+    update_db("INCOME", income)
+    update_db("RACE", race)
+    update_db("EDUCATION", edu)
+    update_db("OCCUPATION", occupation)
+    
+    print(f"""Juror base info:
+        Age={age}
+        Gender={gender}
+        State={state_name}
+        Income={income}
+        Race={race}
+        Education={edu}
+        Occupation={occupation}""")
 
 if __name__ == '__main__':
     main()

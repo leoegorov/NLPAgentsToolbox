@@ -4,10 +4,6 @@ import sys
 
 DATABASE_FILE = os.environ.get('DATABASE_FILE', 'juror.db')
 
-# def check_environment_variables():
-#     if 'DATABASE_FILE' not in os.environ:
-#         print(f"Warning: DATABASE_FILE location is not set. Defaulting to {os.getcwd()}/{DATABASE_FILE}", file=sys.stderr)
-
 def update_db(column, value, id=None):
     conn = sqlite3.connect(DATABASE_FILE)
     cur = conn.cursor()
@@ -24,6 +20,7 @@ def update_db(column, value, id=None):
     columns = [row[1] for row in cur.fetchall()]
     if column not in columns:
         cur.execute(f'ALTER TABLE person ADD COLUMN {column} TEXT')
+        print(f"Created column {column}")
 
     # Determine id if not given
     if id is None:
