@@ -3,8 +3,13 @@ import os
 import re
 import sqlite3
 import importlib.util
+import argparse
 
-if __name__ == '__main__':
+def main():
+    # argument doesn't work for whatever reason
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--num", type=int, default=1, help="Amount of jurors to generate")
+    args, unknown = parser.parse_known_args()
 
     # Set fallback variables
     os.environ.setdefault('DATABASE_FILE', 'build/juror.db')
@@ -21,25 +26,29 @@ if __name__ == '__main__':
 
     DATABASE_FILE = os.environ['DATABASE_FILE']
 
-    conn = sqlite3.connect(DATABASE_FILE)
-    cur = conn.cursor()
-    cur.execute('CREATE TABLE IF NOT EXISTS person (id INTEGER PRIMARY KEY AUTOINCREMENT)')
-    cur.execute('SELECT MAX(id) FROM person')
-    result = cur.fetchone()
-    new_id = (result[0] or 0) + 1
-    cur.execute('INSERT INTO person (id) VALUES (?)', (new_id,))
-    conn.commit()
-    conn.close()
+    for _ in range(args.num):
+        conn = sqlite3.connect(DATABASE_FILE)
+        cur = conn.cursor()
+        cur.execute('CREATE TABLE IF NOT EXISTS person (id INTEGER PRIMARY KEY AUTOINCREMENT)')
+        cur.execute('SELECT MAX(id) FROM person')
+        result = cur.fetchone()
+        new_id = (result[0] or 0) + 1
+        cur.execute('INSERT INTO person (id) VALUES (?)', (new_id,))
+        conn.commit()
+        conn.close()
 
-    for _, filename in sorted(stage_files):
-        module_path = os.path.join(stages_dir, filename)
-        module_name = os.path.splitext(filename)[0]
+        for _, filename in sorted(stage_files):
+            module_path = os.path.join(stages_dir, filename)
+            module_name = os.path.splitext(filename)[0]
 
-        spec = importlib.util.spec_from_file_location(module_name, module_path)
-        stage_module = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(stage_module)
+            spec = importlib.util.spec_from_file_location(module_name, module_path)
+            stage_module = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(stage_module)
 
-        if hasattr(stage_module, 'main'):
-            stage_module.main()
-        else:
-            print(f"\n\033[93mWarning: {filename} has no main() function.\033[0m")
+            if hasattr(stage_module, 'main'):
+                stage_module.main()
+            else:
+                print(f"\n\033[93mWarning: {filename} has no main() function.\033[0m")
+
+if __name__ == '__main__':
+    main()
