@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import os
-import pandas as pd
+import pandas as pd # type: ignore
 import random
 from stages.utils.dbcontroller import get_val, update_db
 
@@ -32,7 +32,7 @@ def getFullName(gender):
     full_name = ""
     while True:
         full_name = generate_full_name(gender)
-        print(f"\nSuggested name: {full_name}")
+        print(f"Suggested name: {full_name}")
         choice = input("Accept (a), New generated suggestion (n), or Enter name of you own (e)? ").strip().lower()
         if choice == 'a':
             print(f"Name accepted: {full_name}")
