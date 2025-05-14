@@ -29,22 +29,58 @@ individual commands.
 ```
 cd path/to/NLPAgentsToolbox
 chmod 755 *.py
-./mkbio.py
-./lsbio.py
-./rmbio.py -h
 ```
 
-### Example: Find and remove all Florida citizens from database
+```
+./main.py -h     
+usage: main.py [-h] [--num NUM]
 
-``./lsbio.py | grep "Florida" | cut -c1 | xargs -n1 ./rmbio.py -i``
+optional arguments:
+  -h, --help  show this help message and exit
+  --num NUM   Amount of jurors to generate
+```
 
-## Data flow
+```
+./tools/lsbio.py -h
+usage: lsbio.py [-h] [--version] [-c] [-i BY_ID] [-l] [-a] [-e] [-q QUERY]
+
+lsbio – print juror information
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --version             show program's version number and exit
+  -c, --columns         List column names only
+  -i BY_ID, --by-id BY_ID
+                        Show records for specified ID
+  -l, --latest          Show the latest juror entry (default)
+  -a, --all             Show all entries
+  -e, --export          Export full database as JSON
+  -q QUERY, --query QUERY
+                        Run a custom SQL query on the person table
+```
+
+```
+ ./tools/rmbio.py -h
+usage: rmbio.py [-h] [--version] (-i ID | -a | -A)
+
+rmbio – remove jurors from the database
+
+optional arguments:
+  -h, --help         show this help message and exit
+  --version          show program's version number and exit
+  -i ID, --id ID     Remove juror by ID
+  -a, --all          Remove all jurors
+  -A, --delete-file  Delete the entire database file
+(NLPAgentsToolbox) leo@lavanshakhor NLPAgentsToolbox % 
+```
+
+## Data flow 
 
 | Stage | Existing columns |
 |-|-|
-| 01-mkbio | |
-| 12-name |  ``ID`` ``AGE`` ``GENDER`` ``STATE`` ``INCOME`` ``RACE`` ``EDU`` ``OCCUPATION`` |
-| 13-religion | ++ ``FIRST_NAME`` ``MIDDLE_NAME`` ``LAST_NAME`` |
-| 14.. | ++ ``RELIGION`` |
-| 90 | all non-LLM generated fields |
-| 99 | all except final prompt for this person |
+| _10-mkbio | |
+| _12-name |  ``ID`` ``AGE`` ``GENDER`` ``STATE`` ``INCOME`` ``RACE`` ``EDUCATION`` ``OCCUPATION`` |
+| _13-religion | ++ ``FIRST_NAME`` ``MIDDLE_NAME`` ``LAST_NAME`` |
+| _14.. | ++ ``RELIGION`` |
+| _90 | all non-LLM generated fields |
+| _99 | all except final prompt for this person |
