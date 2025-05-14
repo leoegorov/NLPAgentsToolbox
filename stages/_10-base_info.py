@@ -6,15 +6,10 @@ import os
 import sys
 import argparse
 import requests_cache # type: ignore
-# from stages.utils.dbcontroller import check_environment_variables, save_person_to_db
 from stages.utils.dbcontroller import update_db
 
 API_CENSUS = os.environ['API_CENSUS']
 DATABASE_FILE = os.environ['DATABASE_FILE']
-
-# def check_environment_variables():
-#     if 'DATABASE_FILE' not in os.environ:
-#         print(f"Warning: DATABASE_FILE location is not set. Defaulting to {os.getcwd()}/{DATABASE_FILE}", file=sys.stderr)
 
 # Get list of U.S. states and populations
 def fetch_state_populations(session= None):
@@ -22,8 +17,6 @@ def fetch_state_populations(session= None):
         'get': 'NAME,P1_001N',
         'for': 'state:*'
     }
-    # if API_KEY:
-    #     params['key'] = API_KEY
 
     response = session.get(API_CENSUS, params=params)
     data = response.json()
@@ -58,7 +51,6 @@ def fetch_pop_age(gender= "m", session= None):
     response = session.get(tmpAPI, params= params)
     agePopData = response.json()
     label= [variable["variables"][i]["label"].split("!!")[-1] for i in agePopData[0][0: -1]]
-    # print(label)
     pop= [int(i) for i in agePopData[1][0: -1]]
     agePopWeight= [label, pop]
     return agePopWeight
@@ -66,7 +58,6 @@ def fetch_pop_age(gender= "m", session= None):
 # Get list of U.S. family vs annual income
 def fetch_family_income(session= None):
     division= [f"B19101A_{i+2:03d}E" for i in range(16)]
-    # print(division)
     params = {
             'get': ",".join(division),
             'for': 'us:*'
@@ -106,7 +97,6 @@ def fetch_pop_education(gender= "f", state= 1, session= None):
     division= [f"S1501_C05_{i+7:03d}E" for i in range(7)]
     if gender== "f":
         division= [f"S1501_C03_{i+7:03d}E" for i in range(7)]
-    # print(division)
     params = {
             'get': ",".join(division),
             'for': f'state:{state:02d}'
@@ -116,7 +106,6 @@ def fetch_pop_education(gender= "f", state= 1, session= None):
     response = session.get(variableURL)
     variable = response.json()
     label= [variable["variables"][i]["label"].split("!!")[-1] for i in division]
-    # print(label)
     response = session.get(tmpAPI, params= params)
     tmpData = response.json()
     pop= [int(i) for i in tmpData[1][0: -1]]
@@ -148,27 +137,6 @@ def select_name_weighted(nameWeight):
     chosen_index = random.choices(range(len(names)), weights=weights)[0]
     return names[chosen_index]
 
-# Initialize and write to SQLite
-# def save_person_to_db(traits):
-#     conn = sqlite3.connect(DATABASE_FILE)
-#     cur = conn.cursor()
-#     #[gender, age, state_name, income, race, edu, occupation]
-#     cur.execute('''
-#         CREATE TABLE IF NOT EXISTS person (
-#             id INTEGER PRIMARY KEY AUTOINCREMENT,
-#             age INTEGER,
-#             gender TEXT,
-#             state TEXT,
-#             income TEXT,
-#             race TEXT,
-#             edu TEXT,
-#             occupation TEXT
-#         )
-#     ''')
-#     cur.execute('INSERT INTO person (age, gender, state, income, race, edu, occupation) VALUES (?, ?, ?, ?, ?, ?, ?)', traits)
-#     conn.commit()
-#     conn.close()
-
 def main():
     parser = argparse.ArgumentParser(
         description='mkbio – create an American and call make them a juror'
@@ -180,7 +148,7 @@ def main():
     session = requests_cache.CachedSession('request_cache', expire_after=timedelta(hours=2))
 
     print("\n")
-    
+
     print("Fetching U.S. population data by state...")
     states = fetch_state_populations(session)
     print("Fetching U.S. population data by state...")

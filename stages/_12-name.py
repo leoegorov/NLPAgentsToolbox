@@ -6,7 +6,6 @@ from stages.utils.dbcontroller import get_val, update_db
 
 DATABASE_FILE = os.environ['DATABASE_FILE']
 
-
 # Load name files
 def load_name_file(path):
     df = pd.read_csv(path)
