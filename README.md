@@ -8,6 +8,7 @@ personalities suitable for juror duty in the US.
 Some python libs require a virtual environment in recent macos versions 
 ```
 cd NLPAgentsToolbox
+chmod -R 755 *.py
 python3 -m venv .
 source bin/activate
 pip3 install requests-cache pandas
@@ -26,12 +27,6 @@ individual commands.
 | API_CENSUS    | Connection to US Census DB | opt   | -     | -     |
 
 ## Usage 
-
-### Install
-```
-cd path/to/NLPAgentsToolbox
-chmod -R 755 *.py
-```
 
 ### Generate juror
 ```
@@ -83,7 +78,7 @@ optional arguments:
 
 | Stage | Existing columns |
 |-|-|
-| _10-mkbio | |
+| _10-base_info | |
 | _12-name |  ``ID`` ``AGE`` ``GENDER`` ``STATE`` ``INCOME`` ``RACE`` ``EDUCATION`` ``OCCUPATION`` |
 | _13-religion | ++ ``FIRST_NAME`` ``MIDDLE_NAME`` ``LAST_NAME`` |
 | _14.. | ++ ``RELIGION`` |
