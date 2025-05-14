@@ -113,22 +113,23 @@ def fetch_pop_education(gender= "f", state= 1, session= None):
     return namePopWeight
 
 def fetch_pop_occupation(gender= "f", session= None):
-    division= [f"S2401_C02_{i+2:03d}E" for i in range(35)]
-    if gender== "f":
-        division= [f"S2401_C04_{i+2:03d}E" for i in range(35)]
+    toGet= "group(B24125)"
+    if gender== "Female":
+        toGet= "group(B24126)"
     params = {
-            'get': ",".join(division),
-            'for': f'us:*'
-        }
-    tmpAPI= "https://api.census.gov/data/2023/acs/acs1/subject"
+            'get': toGet,
+            'for': 'us:*'}
+    tmpAPI= "https://api.census.gov/data/2023/acs/acs1"
+    response = session.get(tmpAPI, params= params)
+    data = response.json()
     variableURL= tmpAPI+"/variables.json"
     response = session.get(variableURL)
     variable = response.json()
-    label= [variable["variables"][i]["label"].split("!!")[-1] for i in division]
-    response = session.get(tmpAPI, params= params)
-    tmpData = response.json()
-    pop= [int(i) for i in tmpData[1][0: -1]]
-    namePopWeight= [label, pop]
+    lenOfData= len(data[0])//2-3
+    nameID= [data[0][i*2+4] for i in range(lenOfData)]
+    nameAmount=  [int(data[1][i*2+4]) for i in range(lenOfData)]
+    label= [variable["variables"][i[:-1]+"E"]["label"].split("!!")[-1] for i in nameID]
+    namePopWeight= [label, nameAmount]
     return namePopWeight
 
 def select_name_weighted(nameWeight):
