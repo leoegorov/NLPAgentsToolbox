@@ -14,19 +14,24 @@ source bin/activate
 pip3 install sqlite3 numpy requests-cache pandas
 ```
 
-## Environment variables
+## Config
 
-Make sure to export these shared variables before invoking commands. 
-They allow for seemless interoperability and modularity of the 
-individual commands.
+The following global variables are read or set in some scripts:
 
-| VAR           | Description                | mkbio | lsbio | rmbio |
-|---------------|----------------------------|-------|-------|-------|
-| DATABASE_FILE | File path to juror.db      | req   | req   | req   |
-| EXPORT_FILE   | File path to export.json   | -     | opt   |       |
-| API_CENSUS    | Connection to US Census DB | opt   | -     | -     |
+| var           | description                   | default                                 | mkbio | lsbio | rmbio | dbcontroller | _10-base-info |
+|---------------|-------------------------------|-----------------------------------------|-------|-------|-------|--------------|---------------|
+| BUILD_DIR     | File path to build directory  | build                                   | r     | r     | r     | -            | -             |
+| DATABASE_FILE | File path to juror.db         | juror.db                                | rw    | rw    | rw    | r            | -             |
+| EXPORT_FILE   | File path to export.json      | export.db                               | -     | rw    |       | -            | -             |
+| API_CENSUS    | Connection to US Census DB    | https://api.census.gov/data/2020/dec/pl | r     | -     | -     | -            | r             |
 
-To call scripts in tools/ without their full path:
+Override:
+```
+export DATABASE_FILE=~/Desktop/juror.db
+```
+
+### Optional: PATH
+Call scripts in tools/ without their full path:
 ```
 cd /path/to/NLPAgentsToolbox && export PATH="$PATH:$PWD/tools"
 ```

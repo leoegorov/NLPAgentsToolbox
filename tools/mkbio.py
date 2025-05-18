@@ -14,13 +14,12 @@ def main():
     parser.add_argument('--version', action='version', version='mkbio v0.0')
     args = parser.parse_args()
 
-    # Set fallback variables
+    # Global variables
     build_dir = os.environ.get('BUILD_DIR', 'build')
-    os.makedirs(build_dir, exist_ok=True)
+    # os.makedirs(build_dir, exist_ok=True)
     database_file = os.path.join(build_dir, 'juror.db')
     os.environ.setdefault('DATABASE_FILE', database_file)
     os.environ.setdefault('API_CENSUS', 'https://api.census.gov/data/2020/dec/pl')
-    # API_KEY = None  # Optional: Replace with your key like 'your_api_key_here'
 
     stages_dir = os.path.join(os.path.dirname(__file__), '..', 'stages')
     stages_dir = os.path.abspath(stages_dir)
@@ -57,7 +56,7 @@ def main():
             if hasattr(stage_module, 'main'):
                 stage_module.main()
             else:
-                print(f"\n\033[93mWarning: {filename} has no main() function.\033[0m")
+                print(f"\n\033[93mWarning: {filename} has no main() function.\033[0m\n")
 
 if __name__ == '__main__':
     main()

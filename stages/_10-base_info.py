@@ -9,7 +9,6 @@ import requests_cache # type: ignore
 from stages.utils.dbcontroller import update_db
 
 API_CENSUS = os.environ['API_CENSUS']
-DATABASE_FILE = os.environ['DATABASE_FILE']
 
 # Get list of U.S. states and populations
 def fetch_state_populations(session= None):

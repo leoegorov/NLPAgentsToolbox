@@ -2,8 +2,6 @@
 import os
 from stages.utils.dbcontroller import get_val, update_db
 
-DATABASE_FILE = os.environ['DATABASE_FILE']
-
 # Interactive prompt example
 def getInput():
     full_name = ""
