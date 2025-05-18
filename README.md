@@ -11,7 +11,7 @@ cd NLPAgentsToolbox
 chmod -R 755 *.py
 python3 -m venv .
 source bin/activate
-pip3 install sqlite3 numpy requests-cache pandas
+pip3 install sqlite3 numpy requests-cache pandas pyyaml
 ```
 
 ## Config
@@ -22,7 +22,8 @@ The following global variables are read or set in some scripts:
 |---------------|-------------------------------|-----------------------------------------|-------|-------|-------|--------------|---------------|
 | BUILD_DIR     | File path to build directory  | build                                   | r     | r     | r     | -            | -             |
 | DATABASE_FILE | File path to juror.db         | juror.db                                | rw    | rw    | rw    | r            | -             |
-| EXPORT_FILE   | File path to export.json      | export.db                               | -     | rw    |       | -            | -             |
+| EXPORT_JSON   | File path to export.json      | export.json                             | -     | rw    | -     | -            | -             |
+| EXPORT_YAML   | File path to export.yaml      | export.yaml                             | -     | rw    | -     | -            | -             |
 | API_CENSUS    | Connection to US Census DB    | https://api.census.gov/data/2020/dec/pl | r     | -     | -     | -            | r             |
 
 Override:
@@ -54,7 +55,7 @@ optional arguments:
 ### List columns, rows, all; Export JSON; Query SQL
 ```
 ./tools/lsbio.py -h
-usage: lsbio.py [-h] [--version] [-c] [-i BY_ID] [-l] [-a] [-e] [-q QUERY]
+usage: lsbio.py [-h] [--version] [-c] [-i BY_ID] [-l] [-a] [-j] [-y] [-q QUERY]
 
 lsbio – print juror information
 
@@ -66,7 +67,9 @@ optional arguments:
                         Show records for specified ID
   -l, --latest          Show the latest juror entry (default)
   -a, --all             Show all entries
-  -e, --export          Export full database as JSON
+  -j, --export-json     Export full database as JSON
+  -y, -e, --export-yaml
+                        Export full database as YAML
   -q QUERY, --query QUERY
                         Run a custom SQL query on the person table
 ```
@@ -92,7 +95,7 @@ optional arguments:
 |-|-|
 | _10-base_info | |
 | _12-name |  ``ID`` ``AGE`` ``GENDER`` ``STATE`` ``INCOME`` ``RACE`` ``EDUCATION`` ``OCCUPATION`` |
-| _13-religion | ++ ``FIRST_NAME`` ``MIDDLE_NAME`` ``LAST_NAME`` |
+| _13-religion | ++ ``FIRST_NAME`` ``MIDDLE_NAME (TODO)`` ``LAST_NAME`` |
 | _14.. | ++ ``RELIGION`` |
 | _90 | all non-LLM generated fields |
 | _99 | all except final prompt for this person |

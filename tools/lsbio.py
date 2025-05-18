@@ -4,20 +4,23 @@ import os
 import sys
 import argparse
 import json
+import yaml
 
 # Global variables
 build_dir = os.environ.get('BUILD_DIR', 'build')
 # os.makedirs(build_dir, exist_ok=True)
 DATABASE_FILE = os.path.join(build_dir, 'juror.db')
 os.environ.setdefault('DATABASE_FILE', DATABASE_FILE)
-EXPORT_FILE = os.path.join(build_dir, 'export.json')
-os.environ.setdefault('EXPORT_FILE', EXPORT_FILE)
+EXPORT_JSON = os.path.join(build_dir, 'jurors.json')
+os.environ.setdefault('EXPORT_JSON', EXPORT_JSON)
+EXPORT_YAML = os.path.join(build_dir, 'jurors.yaml')
+os.environ.setdefault('EXPORT_YAML', EXPORT_YAML)
 
 def check_environment_variables():
     if 'DATABASE_FILE' not in os.environ:
         print(f"Warning: DATABASE_FILE location is not set. Defaulting to {os.getcwd()}/{DATABASE_FILE}", file=sys.stderr)
 
-def print_database_contents(by_id=None, export=False, query=None, latest=False, columns=False, all_entries=False):
+def print_database_contents(by_id=None, query=None, latest=False, columns=False, all_entries=False, export_json=False, export_yaml=False):
     if not os.path.exists(DATABASE_FILE):
         print(f"Database file '{DATABASE_FILE}' does not exist.", file=sys.stderr)
         sys.exit(1)
@@ -33,15 +36,24 @@ def print_database_contents(by_id=None, export=False, query=None, latest=False, 
             print("No columns found in the 'person' table.", file=sys.stderr)
             sys.exit(1)
 
-        if export:
+        if export_json:
             cur.execute('SELECT * FROM person')
             rows = cur.fetchall()
             data = {}
             for row in rows:
                 data[row['id']] = {key: row[key] for key in row.keys() if key != 'id'}
-            with open(EXPORT_FILE, 'w') as f:
+            with open(EXPORT_JSON, 'w') as f:
                 json.dump(data, f, indent=2)
-            print(f"Exported database contents to '{EXPORT_FILE}'")
+            print(f"Exported database contents to '{EXPORT_JSON}'")
+        elif export_yaml:
+            cur.execute('SELECT * FROM person')
+            rows = cur.fetchall()
+            data = {}
+            for row in rows:
+                data[row['id']] = {key: row[key] for key in row.keys() if key != 'id'}
+            with open(EXPORT_YAML, 'w') as f:
+                yaml.dump(data, f)
+            print(f"Exported database contents to '{EXPORT_YAML}'")
         elif query:
             cur.execute(query)
             rows = cur.fetchall()
@@ -97,22 +109,24 @@ def main():
     parser.add_argument('-i', '--by-id', type=int, help='Show records for specified ID')
     parser.add_argument('-l', '--latest', action='store_true', help='Show the latest juror entry (default)')
     parser.add_argument('-a', '--all', action='store_true', help='Show all entries')
-    parser.add_argument('-e', '--export', action='store_true', help='Export full database as JSON')
+    parser.add_argument('-j', '--export-json', action='store_true', help='Export full database as JSON')
+    parser.add_argument('-y', '-e', '--export-yaml', action='store_true', help='Export full database as YAML')
     parser.add_argument('-q', '--query', type=str, help='Run a custom SQL query on the person table')
     args = parser.parse_args()
 
     check_environment_variables()
     # If no specific mode is chosen, default to latest
-    if not (args.by_id or args.export or args.query or args.columns or args.all):
+    if not (args.by_id or args.query or args.columns or args.all or args.export_json or args.export_yaml):
         args.latest = True
 
     print_database_contents(
         by_id=args.by_id,
-        export=args.export,
         query=args.query,
         latest=args.latest,
         columns=args.columns,
-        all_entries=args.all
+        all_entries=args.all,
+        export_json=args.export_json,
+        export_yaml=args.export_yaml
     )
 
 if __name__ == '__main__':

@@ -56,7 +56,7 @@ def main():
             if hasattr(stage_module, 'main'):
                 stage_module.main()
             else:
-                print(f"\n\033[93mWarning: {filename} has no main() function.\033[0m\n")
+                print(f"\n\033[93mWarning: stages/{filename} has no main() function.\033[0m\n")
 
 if __name__ == '__main__':
     main()
