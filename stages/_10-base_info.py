@@ -139,11 +139,11 @@ def select_name_weighted(nameWeight):
     return names[chosen_index]
 
 def main():
-    parser = argparse.ArgumentParser(
-        description='mkbio – create an American and call make them a juror'
-    )
-    parser.add_argument('--version', action='version', version='mkbio v0.0')
-    args = parser.parse_args()
+    # parser = argparse.ArgumentParser(
+    #     description='mkbio – create an American and call make them a juror'
+    # )
+    # parser.add_argument('--version', action='version', version='mkbio v0.0')
+    # args = parser.parse_args()
 
     # cache visited website for better performance
     session = requests_cache.CachedSession('request_cache', expire_after=timedelta(hours=2))

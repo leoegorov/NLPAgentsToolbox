@@ -11,7 +11,7 @@ cd NLPAgentsToolbox
 chmod -R 755 *.py
 python3 -m venv .
 source bin/activate
-pip3 install requests-cache pandas
+pip3 install sqlite3 numpy requests-cache pandas
 ```
 
 ## Environment variables
@@ -26,16 +26,24 @@ individual commands.
 | EXPORT_FILE   | File path to export.json   | -     | opt   |       |
 | API_CENSUS    | Connection to US Census DB | opt   | -     | -     |
 
+To call scripts in tools/ without their full path:
+```
+cd /path/to/NLPAgentsToolbox && export PATH="$PATH:$PWD/tools"
+```
+
 ## Usage 
 
 ### Generate juror
 ```
-./main.py -h     
-usage: main.py [-h] [--num NUM]
+./tools/mkbio.py -h     
+usage: mkbio.py [-h] [-n NUM] [--version]
+
+mkbio – make some American jurors
 
 optional arguments:
-  -h, --help  show this help message and exit
-  --num NUM   Amount of jurors to generate  (WIP)
+  -h, --help         show this help message and exit
+  -n NUM, --num NUM  Amount of jurors to generate
+  --version          show program's version number and exit
 ```
 
 ### List columns, rows, all; Export JSON; Query SQL
@@ -71,12 +79,11 @@ optional arguments:
   -i ID, --id ID     Remove juror by ID
   -a, --all          Remove all jurors
   -A, --delete-file  Delete the entire database file
-(NLPAgentsToolbox) leo@lavanshakhor NLPAgentsToolbox % 
 ```
 
 ## Data flow 
 
-| Stage | Existing columns |
+| Stage | Existing columns that can be accessed |
 |-|-|
 | _10-base_info | |
 | _12-name |  ``ID`` ``AGE`` ``GENDER`` ``STATE`` ``INCOME`` ``RACE`` ``EDUCATION`` ``OCCUPATION`` |
