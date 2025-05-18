@@ -22,8 +22,8 @@ The following global variables are read or set in some scripts:
 |---------------|-------------------------------|-----------------------------------------|-------|-------|-------|--------------|---------------|
 | BUILD_DIR     | File path to build directory  | build                                   | r     | r     | r     | -            | -             |
 | DATABASE_FILE | File path to juror.db         | juror.db                                | rw    | rw    | rw    | r            | -             |
-| EXPORT_JSON   | File path to export.json      | export.json                             | -     | rw    | -     | -            | -             |
-| EXPORT_YAML   | File path to export.yaml      | export.yaml                             | -     | rw    | -     | -            | -             |
+| EXPORT_JSON   | File path to export.json      | jurors.json                             | -     | rw    | -     | -            | -             |
+| EXPORT_YAML   | File path to export.yaml      | jurors.yaml                             | -     | rw    | -     | -            | -             |
 | API_CENSUS    | Connection to US Census DB    | https://api.census.gov/data/2020/dec/pl | r     | -     | -     | -            | r             |
 
 Override:
