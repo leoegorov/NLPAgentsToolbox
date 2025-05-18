@@ -9,9 +9,14 @@ Some python libs require a virtual environment in recent macos versions
 ```
 cd NLPAgentsToolbox
 chmod -R 755 *.py
-python3 -m venv .
-source bin/activate
-pip3 install sqlite3 numpy requests-cache pandas pyyaml
+python3 -m venv .venv
+source .venv/bin/activate
+pip3 install requests_cache pandas pyyaml
+```
+
+Optional: Add to your `.venv/bin/activate` right before `export PATH`:
+```
+PATH="$VIRTUAL_ENV/../NLPAgentsToolbox/tools:$PATH"
 ```
 
 ## Config
@@ -29,12 +34,6 @@ The following global variables are read or set in some scripts:
 Override:
 ```
 export DATABASE_FILE=~/Desktop/juror.db
-```
-
-### Optional: PATH
-Call scripts in tools/ without their full path:
-```
-cd /path/to/NLPAgentsToolbox && export PATH="$PATH:$PWD/tools"
 ```
 
 ## Usage 

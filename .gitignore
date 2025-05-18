@@ -4,8 +4,5 @@ todo.txt
 test.ipynb
 api_key
 request_cache.sqlite
+.venv/
 __pycache__
-pyvenv.cfg
-lib
-include
-bin
