@@ -25,6 +25,7 @@ The following global variables are read or set in some scripts:
 
 | var           | description                   | default                                 | mkbio | lsbio | rmbio | dbcontroller | _10-base-info | _12-name
 |---------------|-------------------------------|-----------------------------------------|-------|-------|-------|--------------|---------------|---------------|
+| PROJECT_ROOT  | File path to top level        | `os.path.abspath`                       | rw    | rw    | rw    | -            | r             | r             |
 | BUILD_DIR     | File path to build directory  | build                                   | rw    | r     | r     | -            | r             | -             |
 | DATABASE_FILE | File path to juror.db         | juror.db                                | rw    | rw    | rw    | r            | -             | -             |
 | EXPORT_JSON   | File path to export.json      | jurors.json                             | -     | rw    | -     | -            | -             | -             |

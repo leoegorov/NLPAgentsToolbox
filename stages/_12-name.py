@@ -4,6 +4,8 @@ import pandas as pd # type: ignore
 import random
 from stages.utils.dbcontroller import get_val, update_db
 
+PROJECT_ROOT  = os.environ['PROJECT_ROOT']
+
 # Load name files
 def load_name_file(path):
     df = pd.read_csv(path)
@@ -12,13 +14,13 @@ def load_name_file(path):
 # Generate a full name based on gender
 def generate_full_name(gender):
     if gender == 'Male':
-        first_names, first_probs = load_name_file('stages/utils/namesCSV/top_200_male_names.csv')
+        first_names, first_probs = load_name_file(os.path.join(PROJECT_ROOT, 'stages', 'utils', 'namesCSV', 'top_200_male_names.csv'))
     elif gender == 'Female':
-        first_names, first_probs = load_name_file('stages/utils/namesCSV/top_200_female_names.csv')
+        first_names, first_probs = load_name_file(os.path.join(PROJECT_ROOT, 'stages', 'utils', 'namesCSV', 'top_200_female_names.csv'))
     else:
         raise ValueError("Gender must be 'male' or 'female'")
 
-    last_names, last_probs = load_name_file('stages/utils/namesCSV/top_200_last_names.csv')
+    last_names, last_probs = load_name_file(os.path.join(PROJECT_ROOT, 'stages', 'utils', 'namesCSV', 'top_200_last_names.csv'))
 
     first = random.choices(first_names, weights=first_probs, k=1)[0]
     last = random.choices(last_names, weights=last_probs, k=1)[0]
