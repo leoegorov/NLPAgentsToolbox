@@ -15,7 +15,9 @@ def main():
     args = parser.parse_args()
 
     # Global variables
-    build_dir = os.environ.get('BUILD_DIR', 'build')
+    PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    os.environ.setdefault('PROJECT_ROOT', PROJECT_ROOT)
+    build_dir = os.path.join(PROJECT_ROOT, 'build')
     # os.makedirs(build_dir, exist_ok=True)
     os.environ.setdefault('BUILD_DIR', build_dir)
     database_file = os.path.join(build_dir, 'juror.db')

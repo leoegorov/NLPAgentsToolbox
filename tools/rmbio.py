@@ -4,7 +4,9 @@ import sys
 import argparse
 
 # Global variables
-build_dir = os.environ.get('BUILD_DIR', 'build')
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+os.environ.setdefault('PROJECT_ROOT', PROJECT_ROOT)
+build_dir = os.path.join(PROJECT_ROOT, 'build')
 # os.makedirs(build_dir, exist_ok=True)
 DATABASE_FILE = os.path.join(build_dir, 'juror.db')
 os.environ.setdefault('DATABASE_FILE', DATABASE_FILE)
