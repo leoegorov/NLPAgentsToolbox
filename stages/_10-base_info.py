@@ -9,6 +9,7 @@ import requests_cache # type: ignore
 from stages.utils.dbcontroller import update_db
 
 API_CENSUS = os.environ['API_CENSUS']
+BUILD_DIR  = os.environ['BUILD_DIR']
 
 # Get list of U.S. states and populations
 def fetch_state_populations(session= None):
@@ -138,14 +139,10 @@ def select_name_weighted(nameWeight):
     return names[chosen_index]
 
 def main():
-    # parser = argparse.ArgumentParser(
-    #     description='mkbio – create an American and call make them a juror'
-    # )
-    # parser.add_argument('--version', action='version', version='mkbio v0.0')
-    # args = parser.parse_args()
 
     # cache visited website for better performance
-    session = requests_cache.CachedSession('request_cache', expire_after=timedelta(hours=2))
+    cache_path = os.path.join(BUILD_DIR, 'request_cache')
+    session = requests_cache.CachedSession(cache_path, expire_after=timedelta(hours=2))
 
     print("\n")
 

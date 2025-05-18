@@ -17,6 +17,7 @@ def main():
     # Global variables
     build_dir = os.environ.get('BUILD_DIR', 'build')
     # os.makedirs(build_dir, exist_ok=True)
+    os.environ.setdefault('BUILD_DIR', build_dir)
     database_file = os.path.join(build_dir, 'juror.db')
     os.environ.setdefault('DATABASE_FILE', database_file)
     os.environ.setdefault('API_CENSUS', 'https://api.census.gov/data/2020/dec/pl')
