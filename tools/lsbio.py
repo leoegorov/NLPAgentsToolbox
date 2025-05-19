@@ -58,9 +58,12 @@ def print_database_contents(by_id=None, query=None, latest=False, columns=False,
             print(f"Exported database contents to '{EXPORT_YAML}'")
         elif query:
             cur.execute(query)
-            rows = cur.fetchall()
-            for row in rows:
-                print(dict(row))
+            if query.strip().lower().startswith("select"):
+                rows = cur.fetchall()
+                for row in rows:
+                    print(dict(row))
+            else:
+                conn.commit()
             return
         elif by_id is not None:
             cur.execute('SELECT * FROM person WHERE id = ?', (by_id,))

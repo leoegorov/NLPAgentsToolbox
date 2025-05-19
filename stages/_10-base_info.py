@@ -168,13 +168,13 @@ def main():
     occupation= select_name_weighted(occupationPopWeight)
 
     # update database
-    update_db("AGE", age)
-    update_db("GENDER", gender)
-    update_db("STATE", state_name)
-    update_db("INCOME", income)
-    update_db("RACE", race)
-    update_db("EDUCATION", edu)
-    update_db("OCCUPATION", occupation)
+    update_db("age", age)
+    update_db("gender", gender)
+    update_db("state", state_name)
+    update_db("income", income)
+    update_db("race", race)
+    update_db("education", edu)
+    update_db("occupation", occupation)
     
     print(f"""Juror base info:
         Age={age}

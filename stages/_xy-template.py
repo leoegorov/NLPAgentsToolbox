@@ -21,8 +21,8 @@ def getInput():
 
 def main():
     print("\n")
-    gender = get_val('GENDER')
+    gender = get_val('gender')
     fullName = getInput()
     splitName = fullName.split(' ')
-    update_db('FIRST_NAME', splitName[0])
-    update_db('LAST_NAME', splitName[1])
+    update_db('first_name', splitName[0])
+    update_db('last_name', splitName[1])

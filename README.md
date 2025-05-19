@@ -94,8 +94,8 @@ optional arguments:
 | Stage | Existing columns that can be accessed |
 |-|-|
 | _10-base_info | |
-| _12-name |  ``ID`` ``AGE`` ``GENDER`` ``STATE`` ``INCOME`` ``RACE`` ``EDUCATION`` ``OCCUPATION`` |
-| _13-religion | ++ ``FIRST_NAME`` ``MIDDLE_NAME (TODO)`` ``LAST_NAME`` |
-| _14.. | ++ ``RELIGION`` |
+| _12-name |  ``id`` ``age`` ``gender`` ``state`` ``income`` ``race`` ``education`` ``occupation`` |
+| _13-religion | ++ ``first_name`` ``middle_name (TODO)`` ``last_name`` |
+| _14.. | ++ ``religion`` |
 | _90 | all non-LLM generated fields |
 | _99 | all except final prompt for this person |

@@ -54,4 +54,4 @@ def getReligion():
 
 def main():
     print("\n")
-    update_db('RELIGION', getReligion())
+    update_db('religion', getReligion())
