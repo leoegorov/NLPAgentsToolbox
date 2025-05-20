@@ -46,10 +46,10 @@ def main():
 
     try:
         if args.id is not None:
-            cur.execute('DELETE FROM person WHERE id = ?', (args.id,))
+            cur.execute('DELETE FROM juror WHERE id = ?', (args.id,))
             print(f"Removed juror with ID {args.id}")
         elif args.all:
-            cur.execute('DELETE FROM person')
+            cur.execute('DELETE FROM juror')
             print("Removed all jurors.")
         conn.commit()
     except sqlite3.OperationalError as e:

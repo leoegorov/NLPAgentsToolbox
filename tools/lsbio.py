@@ -32,14 +32,14 @@ def print_database_contents(by_id=None, query=None, latest=False, columns=False,
     cur = conn.cursor()
 
     try:
-        cur.execute('PRAGMA table_info(person)')
+        cur.execute('PRAGMA table_info(juror)')
         colnames = [row['name'] for row in cur.fetchall()]
         if not colnames:
-            print("No columns found in the 'person' table.", file=sys.stderr)
+            print("No columns found in the 'juror' table.", file=sys.stderr)
             sys.exit(1)
 
         if export_json:
-            cur.execute('SELECT * FROM person')
+            cur.execute('SELECT * FROM juror')
             rows = cur.fetchall()
             data = {}
             for row in rows:
@@ -48,7 +48,7 @@ def print_database_contents(by_id=None, query=None, latest=False, columns=False,
                 json.dump(data, f, indent=2)
             print(f"Exported database contents to '{EXPORT_JSON}'")
         elif export_yaml:
-            cur.execute('SELECT * FROM person')
+            cur.execute('SELECT * FROM juror')
             rows = cur.fetchall()
             data = {}
             for row in rows:
@@ -66,7 +66,7 @@ def print_database_contents(by_id=None, query=None, latest=False, columns=False,
                 conn.commit()
             return
         elif by_id is not None:
-            cur.execute('SELECT * FROM person WHERE id = ?', (by_id,))
+            cur.execute('SELECT * FROM juror WHERE id = ?', (by_id,))
             row = cur.fetchone()
             if row is None:
                 print(f"No entry with ID {by_id} found.")
@@ -76,10 +76,10 @@ def print_database_contents(by_id=None, query=None, latest=False, columns=False,
                     continue
                 print(f"{key.capitalize()}={row[key]}")
         elif all_entries:
-            cur.execute('SELECT id FROM person ORDER BY id')
+            cur.execute('SELECT id FROM juror ORDER BY id')
             ids = [row['id'] for row in cur.fetchall()]
             for pid in ids:
-                cur.execute('SELECT * FROM person WHERE id = ?', (pid,))
+                cur.execute('SELECT * FROM juror WHERE id = ?', (pid,))
                 row = cur.fetchone()
                 print(f"\nId={row['id']}")
                 for key in row.keys():
@@ -87,14 +87,14 @@ def print_database_contents(by_id=None, query=None, latest=False, columns=False,
                         continue
                     print(f"{key.capitalize()}={row[key]}")
         elif columns:
-            print("Columns in 'person' table:")
+            print("Columns in 'juror' table:")
             for col in colnames:
                 print(col)
         elif latest:
-            cur.execute('SELECT * FROM person ORDER BY id DESC LIMIT 1')
+            cur.execute('SELECT * FROM juror ORDER BY id DESC LIMIT 1')
             row = cur.fetchone()
             if row is None:
-                print("No entries found in the 'person' table.", file=sys.stderr)
+                print("No entries found in the 'juror' table.", file=sys.stderr)
                 sys.exit(1)
             for key in row.keys():
                 if key == 'Id':
@@ -116,7 +116,7 @@ def main():
     parser.add_argument('-a', '--all', action='store_true', help='Show all entries')
     parser.add_argument('-j', '--export-json', action='store_true', help='Export full database as JSON')
     parser.add_argument('-y', '-e', '--export-yaml', action='store_true', help='Export full database as YAML')
-    parser.add_argument('-q', '--query', type=str, help='Run a custom SQL query on the person table')
+    parser.add_argument('-q', '--query', type=str, help='Run a custom SQL query on the juror table')
     args = parser.parse_args()
 
     check_environment_variables()

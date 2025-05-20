@@ -40,11 +40,11 @@ def main():
 
         conn = sqlite3.connect(DATABASE_FILE)
         cur = conn.cursor()
-        cur.execute('CREATE TABLE IF NOT EXISTS person (id INTEGER PRIMARY KEY AUTOINCREMENT)')
-        cur.execute('SELECT MAX(id) FROM person')
+        cur.execute('CREATE TABLE IF NOT EXISTS juror (id INTEGER PRIMARY KEY AUTOINCREMENT)')
+        cur.execute('SELECT MAX(id) FROM juror')
         result = cur.fetchone()
         new_id = (result[0] or 0) + 1
-        cur.execute('INSERT INTO person (id) VALUES (?)', (new_id,))
+        cur.execute('INSERT INTO juror (id) VALUES (?)', (new_id,))
         conn.commit()
         conn.close()
 
