@@ -102,3 +102,13 @@ optional arguments:
 | _83.. | ++ ``goal (optional)`` |
 | _90 | all non-LLM generated fields |
 | _99 | all except final prompt for this person |
+
+
+## Add openai api key
+
+
+```
+echo {api_key} > api_key
+```
+
+

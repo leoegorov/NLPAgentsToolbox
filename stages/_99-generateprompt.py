@@ -4,7 +4,12 @@ import subprocess
 from pathlib import Path
 from openai import OpenAI # type: ignore
 
-client = OpenAI() # type: ignore
+api_key= None
+if api_key== None:
+    with open('api_key', 'r', encoding='utf-8') as f:
+        api_key = f.read()
+client = OpenAI(api_key= api_key) # type: ignore
+
 from stages.utils.dbcontroller import get_val, update_db
 
 def ask_chatgpt(question: str, model: str = "gpt-4.1") -> str:
@@ -18,6 +23,7 @@ def ask_chatgpt(question: str, model: str = "gpt-4.1") -> str:
         temperature=0.7)
         return response.choices[0].message.content.strip()
     except Exception as e:
+        print("haha")
         return f"Error: {e}"
 
 def main():
@@ -26,6 +32,9 @@ def main():
     project_root = Path(os.getenv("PROJECT_ROOT", "."))
     lsbio_path = project_root / "tools" / "lsbio.py"
     result = subprocess.run(["python3", str(lsbio_path)], capture_output=True, text=True)
+    if result.returncode != 0:
+        result = subprocess.run(["python", "tools/lsbio.py"], capture_output=True, text=True)
+
     if result.returncode != 0:
         print("Error running tools/lsbio.py:", result.stderr)
         return
