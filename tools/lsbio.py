@@ -20,7 +20,7 @@ os.environ.setdefault('EXPORT_YAML', EXPORT_YAML)
 
 def check_environment_variables():
     if 'DATABASE_FILE' not in os.environ:
-        print(f"Warning: DATABASE_FILE location is not set. Defaulting to {os.getcwd()}/{DATABASE_FILE}", file=sys.stderr)
+        print(f"\033[93mWarning: DATABASE_FILE location is not set. Defaulting to {os.getcwd()}/{DATABASE_FILE}\033[0m", file=sys.stderr)
 
 def print_database_contents(by_id=None, query=None, latest=False, columns=False, all_entries=False, export_json=False, export_yaml=False):
     if not os.path.exists(DATABASE_FILE):
@@ -101,7 +101,7 @@ def print_database_contents(by_id=None, query=None, latest=False, columns=False,
                     continue
                 print(f"{key.capitalize()}={row[key]}")
     except sqlite3.OperationalError as e:
-        print(f"Error: {e}", file=sys.stderr)
+        print(f"\033[93mError: {e}\033[0m", file=sys.stderr)
         sys.exit(1)
     finally:
         conn.close()

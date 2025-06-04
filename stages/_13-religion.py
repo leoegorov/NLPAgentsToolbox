@@ -47,9 +47,9 @@ def getReligion():
                     print(f"Religion selected: {chosen}")
                     return chosen
                 else:
-                    print("Invalid number. Try again.")
+                    print("\033[93mInvalid number. Try again.\033[0m")
             except ValueError:
-                print("Please enter a valid number.")
+                print("\033[93mPlease enter a valid number.\033[0m")
         # otherwise loop again
 
 def main():

@@ -116,7 +116,7 @@ optional arguments:
 |-|-|
 | _10-base_info | |
 | _12-name |  ``id`` ``age`` ``gender`` ``state`` ``income`` ``race`` ``education`` ``occupation`` |
-| _13-religion | ++ ``first_name`` ``middle_name (TODO)`` ``last_name`` |
+| _13-religion | ++ ``first_name`` ``middle_name (optional)`` ``last_name`` |
 | _14.. | ++ ``religion`` |
 | _82.. | ++ ``role`` |
 | _83.. | ++ ``goal (optional)`` |

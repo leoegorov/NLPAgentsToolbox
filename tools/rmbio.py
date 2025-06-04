@@ -13,7 +13,7 @@ os.environ.setdefault('DATABASE_FILE', DATABASE_FILE)
 
 def check_environment_variables():
     if 'DATABASE_FILE' not in os.environ:
-        print(f"Warning: DATABASE_FILE location is not set. Defaulting to {os.getcwd()}/{DATABASE_FILE}", file=sys.stderr)
+        print(f"\033[93mWarning: DATABASE_FILE location is not set. Defaulting to {os.getcwd()}/{DATABASE_FILE}\033[0m", file=sys.stderr)
 
 def main():
     parser = argparse.ArgumentParser(
@@ -53,7 +53,7 @@ def main():
             print("Removed all jurors.")
         conn.commit()
     except sqlite3.OperationalError as e:
-        print(f"Error: {e}", file=sys.stderr)
+        print(f"\033[93mError: {e}\033[0m", file=sys.stderr)
         sys.exit(1)
     finally:
         conn.close()

@@ -20,7 +20,7 @@ def update_db(column, value, id=None):
     columns = [row[1] for row in cur.fetchall()]
     if column not in columns:
         cur.execute(f'ALTER TABLE juror ADD COLUMN {column} TEXT')
-        print(f"Created column {column}")
+        print(f"\033[93mCreated field {column}\033[0m")
 
     # Determine id if not given
     if id is None:
@@ -64,6 +64,7 @@ def get_val(column, id=None):
         result = cur.fetchone()
         return result[0] if result else None
     except sqlite3.OperationalError:
+        print(f"\033[93mError reading the database\033[0m")
         return None
     finally:
         conn.close()

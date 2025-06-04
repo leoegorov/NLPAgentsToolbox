@@ -23,8 +23,7 @@ def ask_chatgpt(question: str, model: str = "gpt-4.1") -> str:
         temperature=0.7)
         return response.choices[0].message.content.strip()
     except Exception as e:
-        print("haha")
-        return f"Error: {e}"
+        return f"\033[93mError: {e}\033[0m"
 
 def main():
     project_root = Path(os.getenv("PROJECT_ROOT", "."))
@@ -34,7 +33,7 @@ def main():
         result = subprocess.run(["python", "tools/lsbio.py"], capture_output=True, text=True)
 
     if result.returncode != 0:
-        print("Error running tools/lsbio.py:", result.stderr)
+        print(f"\033[93mError running tools/lsbio.py: {result.stderr}\033[0m")
         return
     cols = result.stdout.strip()
 

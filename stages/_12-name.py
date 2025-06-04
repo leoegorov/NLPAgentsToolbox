@@ -18,7 +18,7 @@ def generate_full_name(gender):
     elif gender == 'Female':
         first_names, first_probs = load_name_file(os.path.join(PROJECT_ROOT, 'stages', 'utils', 'namesCSV', 'top_200_female_names.csv'))
     else:
-        raise ValueError("Gender must be 'male' or 'female'")
+        raise ValueError("\033[93mGender must be 'male' or 'female'\033[0m")
 
     last_names, last_probs = load_name_file(os.path.join(PROJECT_ROOT, 'stages', 'utils', 'namesCSV', 'top_200_last_names.csv'))
 
@@ -46,6 +46,12 @@ def getFullName(gender):
 def main():
     gender = get_val('gender')
     fullName = getFullName(gender)
-    splitName = fullName.split(' ')
-    update_db('first_name', splitName[0])
-    update_db('last_name', splitName[1])
+    split_name = fullName.split(' ')
+    first_name = split_name[0]
+    last_name = split_name[-1]
+    middle_name = ' '.join(split_name[1:-1]) if len(split_name) > 2 else ''
+
+    update_db('first_name', first_name)
+    update_db('last_name', last_name)
+    if middle_name:
+        update_db('middle_name', middle_name)
