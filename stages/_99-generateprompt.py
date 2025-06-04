@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import os
 import subprocess
+from pathlib import Path
 from openai import OpenAI # type: ignore
 
 client = OpenAI() # type: ignore
@@ -22,7 +23,9 @@ def ask_chatgpt(question: str, model: str = "gpt-4.1") -> str:
 def main():
     print("\n")
 
-    result = subprocess.run(["python3", "tools/lsbio.py"], capture_output=True, text=True)
+    project_root = Path(os.getenv("PROJECT_ROOT", "."))
+    lsbio_path = project_root / "tools" / "lsbio.py"
+    result = subprocess.run(["python3", str(lsbio_path)], capture_output=True, text=True)
     if result.returncode != 0:
         print("Error running tools/lsbio.py:", result.stderr)
         return
