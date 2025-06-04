@@ -36,6 +36,7 @@ def main():
     DATABASE_FILE = os.environ['DATABASE_FILE']
 
     for i in range(args.num):
+        
         if args.num > 1:   print(f"\nCreating juror {i + 1} of {args.num}")
 
         conn = sqlite3.connect(DATABASE_FILE)
@@ -49,13 +50,14 @@ def main():
         conn.close()
 
         for _, filename in sorted(stage_files):
+            print(filename)
             module_path = os.path.join(stages_dir, filename)
             module_name = os.path.splitext(filename)[0]
 
             spec = importlib.util.spec_from_file_location(module_name, module_path)
             stage_module = importlib.util.module_from_spec(spec)
             spec.loader.exec_module(stage_module)
-
+            
             if hasattr(stage_module, 'main'):
                 stage_module.main()
             else:
