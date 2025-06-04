@@ -104,7 +104,7 @@ optional arguments:
 | _99 | all except final prompt for this person |
 
 
-## add openai api key
+## Add openai api key
 
 
 ```
