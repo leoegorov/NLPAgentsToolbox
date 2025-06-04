@@ -33,13 +33,13 @@ The following global variables are read or set in some scripts:
 | API_CENSUS     | Connection to US Census DB    | https://api.census.gov/data/2020/dec/pl | r     | -     | -     | -            | r             | -             |                    |
 | OPENAI_API_KEY | OpenAI API key for prompt     | `api_key`                               | -     | -     | -     | -            | -             | -             | r                  |
 
-Override:
+### Override:
 ```
 export DATABASE_FILE=~/Desktop/juror.db
 ```
 
-### Add openai api key
-Recommended:  
+### Add OpenAI API key
+#### Recommended:  
 In ``.venv/bin/activate``:  
 ```
 source "$VIRTUAL_ENV/../api_key"
@@ -49,7 +49,7 @@ In ``api_key``:
 export OPENAI_API_KEY='sk-proj-....'
 ```
   
-Alternative:  
+#### Alternative:  
 ```
 echo {api_key} > api_key
 ```
