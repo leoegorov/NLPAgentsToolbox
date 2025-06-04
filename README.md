@@ -23,7 +23,7 @@ PATH="$VIRTUAL_ENV/../NLPAgentsToolbox/tools:$PATH"
 
 The following global variables are read or set in some scripts:
 
-| var            | description                   | default                                 | mkbio | lsbio | rmbio | dbcontroller | _10-base-info | _12-name      | _99-generateprompt
+| var            | description                   | default                                 | mkbio | lsbio | rmbio | dbcontroller | _10-base-info | _12-name      | _99-biography
 |----------------|-------------------------------|-----------------------------------------|-------|-------|-------|--------------|---------------|---------------|--------------------|
 | PROJECT_ROOT   | File path to top level        | `os.path.abspath`                       | rw    | rw    | rw    | -            | r             | r             | -                  |
 | BUILD_DIR      | File path to build directory  | build                                   | rw    | r     | r     | -            | r             | -             | -                  |
