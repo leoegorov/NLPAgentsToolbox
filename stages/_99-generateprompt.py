@@ -3,6 +3,7 @@ import os
 import subprocess
 from pathlib import Path
 from openai import OpenAI # type: ignore
+from stages.utils.dbcontroller import get_val, update_db
 
 PROJECT_ROOT  = os.environ['PROJECT_ROOT']
 OPENAI_API_KEY = os.environ['OPENAI_API_KEY']
@@ -14,8 +15,6 @@ if api_key == None and not OPENAI_API_KEY:
     with open(api_path, 'r', encoding='utf-8') as f:
         api_key = f.read()
 client = OpenAI(api_key= api_key) # type: ignore
-
-from stages.utils.dbcontroller import get_val, update_db
 
 def ask_chatgpt(question: str, model: str = "gpt-4.1") -> str:
     try:
