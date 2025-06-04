@@ -4,9 +4,12 @@ import subprocess
 from pathlib import Path
 from openai import OpenAI # type: ignore
 
+PROJECT_ROOT  = os.environ['PROJECT_ROOT']
+
 api_key= None
 if api_key== None:
-    with open('api_key', 'r', encoding='utf-8') as f:
+    api_path= os.path.join(PROJECT_ROOT, 'api_key')
+    with open(api_path, 'r', encoding='utf-8') as f:
         api_key = f.read()
 client = OpenAI(api_key= api_key) # type: ignore
 
