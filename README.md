@@ -98,5 +98,7 @@ optional arguments:
 | _12-name |  ``id`` ``age`` ``gender`` ``state`` ``income`` ``race`` ``education`` ``occupation`` |
 | _13-religion | ++ ``first_name`` ``middle_name (TODO)`` ``last_name`` |
 | _14.. | ++ ``religion`` |
+| _81.. | ++ ``goal`` |
+| _82.. | ++ ``role`` |
 | _90 | all non-LLM generated fields |
 | _99 | all except final prompt for this person |
