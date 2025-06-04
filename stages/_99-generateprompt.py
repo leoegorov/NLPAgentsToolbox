@@ -5,9 +5,11 @@ from pathlib import Path
 from openai import OpenAI # type: ignore
 
 PROJECT_ROOT  = os.environ['PROJECT_ROOT']
+OPENAI_API_KEY = os.environ['OPENAI_API_KEY']
 
+# For users without venv
 api_key= None
-if api_key== None:
+if api_key == None and not OPENAI_API_KEY:
     api_path= os.path.join(PROJECT_ROOT, 'api_key')
     with open(api_path, 'r', encoding='utf-8') as f:
         api_key = f.read()
@@ -16,10 +18,6 @@ client = OpenAI(api_key= api_key) # type: ignore
 from stages.utils.dbcontroller import get_val, update_db
 
 def ask_chatgpt(question: str, model: str = "gpt-4.1") -> str:
-    # api_key = os.getenv("OPENAI_API_KEY")
-    # if not api_key:
-    #     raise RuntimeError("OPENAI_API_KEY environment variable not set.")
-
     try:
         response = client.chat.completions.create(model=model,
         messages=[{"role": "user", "content": question}],
