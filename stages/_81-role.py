@@ -3,7 +3,7 @@ import os
 from stages.utils.dbcontroller import get_val, update_db
 
 def get_role():
-    print("\nPlease describe the role for this juror.")
+    print("Please describe the role for this juror.")
     role = ""
     while not role.strip():
         role = input("Enter the role: ").strip()
@@ -12,6 +12,5 @@ def get_role():
     return role
 
 def main():
-    print("\n")
     role = get_role()
     update_db('role', role)

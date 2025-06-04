@@ -53,5 +53,4 @@ def getReligion():
         # otherwise loop again
 
 def main():
-    print("\n")
     update_db('religion', getReligion())

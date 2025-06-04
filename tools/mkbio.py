@@ -49,8 +49,12 @@ def main():
         conn.commit()
         conn.close()
 
-        for _, filename in sorted(stage_files):
-            print(filename)
+        total_stages = 99
+        for index, filename in sorted(stage_files):
+            stage_number = index
+            stage_name = os.path.splitext(filename)[0].split('-', 1)[1].replace('_', ' ').title()
+            print(f'\nStage {stage_number} of {total_stages}: {stage_name}')
+            
             module_path = os.path.join(stages_dir, filename)
             module_name = os.path.splitext(filename)[0]
 

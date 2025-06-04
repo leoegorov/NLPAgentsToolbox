@@ -38,6 +38,26 @@ Override:
 export DATABASE_FILE=~/Desktop/juror.db
 ```
 
+### Add openai api key
+Recommended:  
+In ``.venv/bin/activate``:  
+```
+source "$VIRTUAL_ENV/../api_key"
+```
+In ``api_key``:  
+```
+export OPENAI_API_KEY='sk-proj-....'
+```
+  
+Alternative:  
+```
+echo {api_key} > api_key
+```
+In ``api_key``:  
+```
+sk-proj-....
+```
+
 ## Usage 
 
 ### Generate juror
@@ -101,14 +121,4 @@ optional arguments:
 | _82.. | ++ ``role`` |
 | _83.. | ++ ``goal (optional)`` |
 | _90 | all non-LLM generated fields |
-| _99 | all except final prompt for this person |
-
-
-## Add openai api key
-
-
-```
-echo {api_key} > api_key
-```
-
-
+| _99 | all except biography for this person |

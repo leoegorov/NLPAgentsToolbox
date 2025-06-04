@@ -144,8 +144,6 @@ def main():
     cache_path = os.path.join(BUILD_DIR, 'request_cache')
     session = requests_cache.CachedSession(cache_path, expire_after=timedelta(hours=2))
 
-    print("\n")
-
     print("Fetching U.S. population data by state...")
     states = fetch_state_populations(session)
     print("Fetching U.S. population data by state...")

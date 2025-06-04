@@ -20,7 +20,6 @@ def getInput():
                 print("Please enter a full name!")
 
 def main():
-    print("\n")
     gender = get_val('gender')
     fullName = getInput()
     splitName = fullName.split(' ')

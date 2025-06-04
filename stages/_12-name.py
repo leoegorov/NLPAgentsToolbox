@@ -44,7 +44,6 @@ def getFullName(gender):
                 print("Please enter a full name!")
 
 def main():
-    print("\n")
     gender = get_val('gender')
     fullName = getFullName(gender)
     splitName = fullName.split(' ')

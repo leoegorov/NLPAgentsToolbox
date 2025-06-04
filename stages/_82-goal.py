@@ -8,7 +8,7 @@ def get_goal():
     if response in ['n', 'no', 'N']:
         return ""
     
-    print("\nOptional: Please describe the goal for this juror.")
+    print("Optional: Please describe the goal for this juror.")
     # goal = ""
     # while not goal.strip():
     goal = input("Enter the goal: ").strip()
@@ -17,7 +17,6 @@ def get_goal():
     return goal
 
 def main():
-    print("\n")
     goal = get_goal()
     if goal:
         update_db('goal', goal)

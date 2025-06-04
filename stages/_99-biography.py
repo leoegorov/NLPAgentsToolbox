@@ -27,8 +27,6 @@ def ask_chatgpt(question: str, model: str = "gpt-4.1") -> str:
         return f"Error: {e}"
 
 def main():
-    print("\n")
-
     project_root = Path(os.getenv("PROJECT_ROOT", "."))
     lsbio_path = project_root / "tools" / "lsbio.py"
     result = subprocess.run(["python3", str(lsbio_path)], capture_output=True, text=True)
