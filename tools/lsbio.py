@@ -43,7 +43,7 @@ def print_database_contents(by_id=None, query=None, latest=False, columns=False,
             rows = cur.fetchall()
             data = {}
             for row in rows:
-                data[row['id']] = {key: row[key] for key in row.keys() if key != 'id'}
+                data[f"jury_member_{row['id']}"] = {key: row[key] for key in row.keys() if key != 'id'}
             with open(EXPORT_JSON, 'w') as f:
                 json.dump(data, f, indent=2)
             print(f"Exported database contents to '{EXPORT_JSON}'")
@@ -52,7 +52,7 @@ def print_database_contents(by_id=None, query=None, latest=False, columns=False,
             rows = cur.fetchall()
             data = {}
             for row in rows:
-                data[row['id']] = {key: row[key] for key in row.keys() if key != 'id'}
+                data[f"jury_member_{row['id']}"] = {key: row[key] for key in row.keys() if key != 'id'}
             with open(EXPORT_YAML, 'w') as f:
                 yaml.dump(data, f)
             print(f"Exported database contents to '{EXPORT_YAML}'")
