@@ -6,8 +6,8 @@ personalities suitable for juror duty in the US.
 ## Quick start on BGU slurm
 ```
 source .venv/bin/activate
-mkbio.py -n3
-lsbio.py -e
+tools/mkbio.py -n3
+tools/lsbio.py -e
 less build/jurors.yaml
 ```
 **Don't commit to the repo on slurm!**  
