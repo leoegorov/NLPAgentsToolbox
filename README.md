@@ -10,6 +10,8 @@ mkbio.py -n3
 lsbio.py -e
 less build/jurors.yaml
 ```
+**Don't commit to the repo on slurm!**  
+Changes to /sise/Yalla_work/nlpsd/NLPAgentsToolbox will be reset every hour.
 
 ## Installation from scratch
 
