@@ -3,7 +3,15 @@
 This is a toolbox for creating realistic NLP social agent 
 personalities suitable for juror duty in the US.
 
-## Installation and dependencies
+## Quick start on BGU slurm
+```
+source .venv/bin/activate
+mkbio.py -n3
+lsbio.py -e
+less build/jurors.yaml
+```
+
+## Installation from scratch
 
 Some python libs require a virtual environment in recent macos versions 
 ```
