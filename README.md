@@ -24,7 +24,7 @@ source .venv/bin/activate
 pip3 install requests_cache pandas pyyaml openai
 ```
 
-Optional: Add to your `.venv/bin/activate` right before `export PATH`:
+Optional: Add to your `.venv/bin/activate` right before `export PATH`: (not working on slurm)
 ```
 PATH="$VIRTUAL_ENV/../tools:$PATH"
 ```
