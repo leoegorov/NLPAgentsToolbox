@@ -31,7 +31,7 @@ The following global variables are read or set in some scripts:
 | EXPORT_JSON    | File path to export.json      | jurors.json                             | -     | rw    | -     | -            | -             | -             | -                  |
 | EXPORT_YAML    | File path to export.yaml      | jurors.yaml                             | -     | rw    | -     | -            | -             | -             | -                  |
 | API_CENSUS     | Connection to US Census DB    | https://api.census.gov/data/2020/dec/pl | r     | -     | -     | -            | r             | -             | -                  |
-| OPENAI_API_KEY | OpenAI API key for prompt     | `api_key`                               | -     | -     | -     | -            | -             | -             | r                  |
+| OPENAI_API_KEY | OpenAI API key for prompt     | `project_root/api_key`                  | -     | -     | -     | -            | -             | -             | r                  |
 
 ### Override:
 ```
@@ -40,20 +40,21 @@ export DATABASE_FILE=~/Desktop/juror.db
 
 ### Add OpenAI API key
 #### Recommended:  
-In ``.venv/bin/activate``:  
+In ``project_root/.venv/bin/activate``:  
 ```
 source "$VIRTUAL_ENV/../api_key"
 ```
-In ``api_key``:  
+In ``project_root/api_key``:  
 ```
 export OPENAI_API_KEY='sk-proj-....'
 ```
   
 #### Alternative:  
 ```
+cd path/to/project_root
 echo {api_key} > api_key
 ```
-In ``api_key``:  
+In ``project_root/api_key``:  
 ```
 sk-proj-....
 ```
