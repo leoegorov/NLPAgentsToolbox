@@ -16,7 +16,7 @@ pip3 install requests_cache pandas pyyaml openai
 
 Optional: Add to your `.venv/bin/activate` right before `export PATH`:
 ```
-PATH="$VIRTUAL_ENV/../NLPAgentsToolbox/tools:$PATH"
+PATH="$VIRTUAL_ENV/../tools:$PATH"
 ```
 
 ## Config
@@ -31,7 +31,7 @@ The following global variables are read or set in some scripts:
 | EXPORT_JSON    | File path to export.json      | jurors.json                             | -     | rw    | -     | -            | -             | -             | -                  |
 | EXPORT_YAML    | File path to export.yaml      | jurors.yaml                             | -     | rw    | -     | -            | -             | -             | -                  |
 | API_CENSUS     | Connection to US Census DB    | https://api.census.gov/data/2020/dec/pl | r     | -     | -     | -            | r             | -             | -                  |
-| OPENAI_API_KEY | OpenAI API key for prompt     | api_key                                 | -     | -     | -     | -            | -             | -             | r                  |
+| OPENAI_API_KEY | OpenAI API key for prompt     | `api_key`                               | -     | -     | -     | -            | -             | -             | r                  |
 
 ### Override:
 ```
