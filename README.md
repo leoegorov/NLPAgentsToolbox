@@ -4,14 +4,16 @@ This is a toolbox for creating realistic NLP social agent
 personalities suitable for juror duty in the US.
 
 ## Quick start on BGU slurm
+> [!WARNING]
+> **Don't commit to the repo on slurm!**  
+> Changes to /sise/Yalla_work/nlpsd/NLPAgentsToolbox will be reset every hour.
+
 ```
 source .venv/bin/activate
 tools/mkbio.py -n3
 tools/lsbio.py -e
 less build/jurors.yaml
 ```
-**Don't commit to the repo on slurm!**  
-Changes to /sise/Yalla_work/nlpsd/NLPAgentsToolbox will be reset every hour.
 
 ## Installation from scratch
 
@@ -24,10 +26,11 @@ source .venv/bin/activate
 pip3 install requests_cache pandas pyyaml openai
 ```
 
-Optional: Add to your `.venv/bin/activate` right before `export PATH`: (not working on slurm)
-```
-PATH="$VIRTUAL_ENV/../tools:$PATH"
-```
+> [!TIP]
+> Optional: Add to your `.venv/bin/activate` right before `export PATH`: (not working on slurm)
+> ```
+> PATH="$VIRTUAL_ENV/../tools:$PATH"
+> ```
 
 ## Config
 
@@ -43,10 +46,11 @@ The following global variables are read or set in some scripts:
 | API_CENSUS     | Connection to US Census DB    | [Census API](https://api.census.gov/data/2020/dec/pl) | r     | -     | -     | -            | r             | -             | -                  |
 | OPENAI_API_KEY | OpenAI API key for prompt     | `project_root/api_key`                  | -     | -     | -     | -            | -             | -             | r                  |
 
-### Override:
-```
-export DATABASE_FILE=~/Desktop/juror.db
-```
+> [!TIP]
+> Override in shell:
+> ```
+> export DATABASE_FILE=~/Desktop/juror.db
+> ```
 
 ### Add OpenAI API key
 #### Recommended:  
