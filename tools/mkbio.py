@@ -6,6 +6,8 @@ import sqlite3
 import importlib.util
 import argparse
 
+from tools.readFile import readFile, getLengthOfFeatures
+
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 def main():
@@ -35,9 +37,14 @@ def main():
 
     DATABASE_FILE = os.environ['DATABASE_FILE']
 
-    for i in range(args.num):
-        
-        if args.num > 1:   print(f"\nCreating juror {i + 1} of {args.num}")
+    numOfLoops = args.num
+    if args.num == 1:
+        numOfLoops = getLengthOfFeatures()
+
+
+    for i in range(numOfLoops):
+
+        if numOfLoops > 1:   print(f"\nCreating juror {i + 1} of {numOfLoops}")
 
         conn = sqlite3.connect(DATABASE_FILE)
         cur = conn.cursor()
@@ -54,14 +61,14 @@ def main():
             stage_number = index
             stage_name = os.path.splitext(filename)[0].split('-', 1)[1].replace('_', ' ').title()
             print(f'\nStage {stage_number} of {total_stages}: {stage_name}')
-            
+
             module_path = os.path.join(stages_dir, filename)
             module_name = os.path.splitext(filename)[0]
 
             spec = importlib.util.spec_from_file_location(module_name, module_path)
             stage_module = importlib.util.module_from_spec(spec)
             spec.loader.exec_module(stage_module)
-            
+
             if hasattr(stage_module, 'main'):
                 stage_module.main()
             else:

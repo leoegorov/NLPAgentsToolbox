@@ -4,6 +4,7 @@ import subprocess
 from pathlib import Path
 from openai import OpenAI # type: ignore
 from stages.utils.dbcontroller import get_val, update_db
+from tools.readFile import get_next_features
 
 PROJECT_ROOT  = os.environ['PROJECT_ROOT']
 OPENAI_API_KEY = os.environ['OPENAI_API_KEY']
@@ -38,7 +39,13 @@ def main():
     cols = result.stdout.strip()
 
     while True:
-        biography = ask_chatgpt(f"Write a short biography (and write nothing else) for this citizen:\n {cols}")
+        msgToChatGPT = f"Write a short biography (and write nothing else) for this citizen:\n {cols}. " \
+                       f"I have some new features I want this citizen to have, if you have a contradiction " \
+                       f"from previous data I gave you, please take the new data I will give you. " \
+                       f"If you want you can change the name according to the gender. I want this citizen to be:" \
+                       f"{get_next_features()}"
+
+        biography = ask_chatgpt(msgToChatGPT)
         print(f"Biography: {biography}")
         choice = input("Accept (A), new generated suggestion (n) or enter name of your own (e)? ").strip() or 'A'
         if choice == 'e':
