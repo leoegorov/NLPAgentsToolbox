@@ -33,14 +33,14 @@ PATH="$VIRTUAL_ENV/../tools:$PATH"
 
 The following global variables are read or set in some scripts:
 
-| var            | description                   | default                                 | mkbio | lsbio | rmbio | dbcontroller | _10-base-info | _12-name      | _99-biography
+| var            | description                   | default                                 | [mk](tools/mkbio.py) | [ls](tools/lsbio.py) | [rm](tools/rmbio.py) | [db](stages/utils/dbcontroller.py) | [10](stages/_10-base_info.py) | [12](stages/_12-name.py)      | [99](stages/_99-biography.py)
 |----------------|-------------------------------|-----------------------------------------|-------|-------|-------|--------------|---------------|---------------|--------------------|
 | PROJECT_ROOT   | File path to top level        | `os.path.abspath`                       | rw    | rw    | rw    | -            | r             | r             | -                  |
 | BUILD_DIR      | File path to build directory  | build                                   | rw    | r     | r     | -            | r             | -             | -                  |
 | DATABASE_FILE  | File path to juror.db         | juror.db                                | rw    | rw    | rw    | r            | -             | -             | -                  |
 | EXPORT_JSON    | File path to export.json      | jurors.json                             | -     | rw    | -     | -            | -             | -             | -                  |
 | EXPORT_YAML    | File path to export.yaml      | jurors.yaml                             | -     | rw    | -     | -            | -             | -             | -                  |
-| API_CENSUS     | Connection to US Census DB    | https://api.census.gov/data/2020/dec/pl | r     | -     | -     | -            | r             | -             | -                  |
+| API_CENSUS     | Connection to US Census DB    | [Census API](https://api.census.gov/data/2020/dec/pl) | r     | -     | -     | -            | r             | -             | -                  |
 | OPENAI_API_KEY | OpenAI API key for prompt     | `project_root/api_key`                  | -     | -     | -     | -            | -             | -             | r                  |
 
 ### Override:
