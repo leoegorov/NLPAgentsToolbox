@@ -59,10 +59,7 @@ The following global variables are read or set in some scripts:
 | OPENAI_API_KEY | OpenAI API key for prompt     | `project_root/api_key`                  | -     | -     | -     | -            | -             | -             | r                  |
 
 > [!TIP]
-> Override in shell:
-> ```
-> export DATABASE_FILE=~/Desktop/juror.db
-> ```
+> `mkbio` reads a whole range of additional variables: see above section ["Customizing suggested distribution"](#customizing-suggested-distribution)
 
 ### Add OpenAI API key
 #### Recommended:  
