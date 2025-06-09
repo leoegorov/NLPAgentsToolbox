@@ -158,8 +158,8 @@ def fetch_pop_occupation(gender= "f", session= None):
     nameID = filtered_cols
     nameAmount = [int(data[1][columns.index(col)]) for col in filtered_cols]
     label= [variable["variables"][i[:-1]+"E"]["label"].split("!!")[-1] for i in nameID]
-    namePopWeight= [label, nameAmount]
-    return namePopWeight
+    labels, weights = parse_user_quote_env("BIO_QUOTE_OCCUPATION", label, nameAmount)
+    return [labels, weights]
 
 def select_name_weighted(nameWeight):
     names = nameWeight[0]
