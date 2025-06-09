@@ -15,6 +15,18 @@ tools/lsbio.py -e
 less build/jurors.yaml
 ```
 
+### Customizing suggested distribution
+Categories are presented by the procedural interactive juror generation tool based on available US 2020 census database distribution when available, or randomly.  
+Users can modify the frequency of individual presented categories by exporting variables before running `tools/mkbio.py`:  
+```
+export BIO_QUOTE_<CATEGORY>=<VALUE>
+```
+with `<VALUE>` being a chance between 0.0 and 1.0.  
+A list of every available `<CATEGORY>` can be displayed with  
+```
+mkbio.py --print-labels
+```
+
 ## Installation from scratch
 
 Some python libs require a virtual environment in recent macos versions 
@@ -78,7 +90,7 @@ sk-proj-....
 ### Generate juror
 ```
 ./tools/mkbio.py -h     
-usage: mkbio.py [-h] [-n NUM] [--version]
+usage: mkbio.py [-h] [-n NUM] [--version] [--print-labels]
 
 mkbio – make some American jurors
 
@@ -86,6 +98,7 @@ optional arguments:
   -h, --help         show this help message and exit
   -n NUM, --num NUM  Amount of jurors to generate
   --version          show program's version number and exit
+  --print-labels     Print available census labels and exit
 ```
 
 ### List columns, rows, all; Export YAML, JSON; Query SQL
