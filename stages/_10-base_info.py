@@ -7,6 +7,26 @@ import sys
 import argparse
 import requests_cache # type: ignore
 from stages.utils.dbcontroller import update_db
+from collections import defaultdict
+
+import re
+
+def normalize_label(label):
+    return re.sub(r'[^a-z0-9]+', '_', label.lower()).strip('_')
+
+def parse_user_quote_env(prefix, labels, pops):
+    normalized_labels = [normalize_label(label) for label in labels]
+    quote_env = {label: float(os.environ.get(f"{prefix}_{label.upper()}", -1)) for label in normalized_labels}
+    user_defined = {k: v for k, v in quote_env.items() if v >= 0}
+    if sum(user_defined.values()) > 1.0:
+        raise ValueError(f"{prefix} quote sum exceeds 100%: {sum(user_defined.values())}")
+    remaining = 1.0 - sum(user_defined.values())
+    remaining_labels = [lbl for lbl, norm in zip(labels, normalized_labels) if quote_env[norm] == -1]
+    remaining_pops = [pops[labels.index(lbl)] for lbl in remaining_labels]
+    remaining_total = sum(remaining_pops)
+    adjusted = {normalize_label(lbl): pop / remaining_total * remaining for lbl, pop in zip(remaining_labels, remaining_pops)}
+    full_dist = {**user_defined, **adjusted}
+    return labels, [full_dist[normalize_label(label)] for label in labels]
 
 API_CENSUS = os.environ['API_CENSUS']
 BUILD_DIR  = os.environ['BUILD_DIR']
@@ -52,8 +72,9 @@ def fetch_pop_age(gender= "m", session= None):
     agePopData = response.json()
     label= [variable["variables"][i]["label"].split("!!")[-1] for i in agePopData[0][0: -1]]
     pop= [int(i) for i in agePopData[1][0: -1]]
-    agePopWeight= [label, pop]
-    return agePopWeight
+    label, pop = label, pop
+    labels, weights = parse_user_quote_env("BIO_QUOTE_AGE", label, pop)
+    return [labels, weights]
 
 # Get list of U.S. family vs annual income
 def fetch_family_income(session= None):
@@ -70,8 +91,8 @@ def fetch_family_income(session= None):
     tmpData = response.json()
     label= [variable["variables"][i]["label"].split("!!")[-1] for i in tmpData[0][0: -1]]
     pop= [int(i) for i in tmpData[1][0: -1]]
-    namePopWeight= [label, pop]
-    return namePopWeight
+    labels, weights = parse_user_quote_env("BIO_QUOTE_INCOME", label, pop)
+    return [labels, weights]
 
 # Get list of U.S. population vs one race, whole age
 def fetch_pop_singleRace(state= 1, session= None):
@@ -89,8 +110,9 @@ def fetch_pop_singleRace(state= 1, session= None):
     response = session.get(tmpAPI, params= params)
     tmpData = response.json()
     pop= [int(i) for i in tmpData[1][0: -1]]
-    namePopWeight= [label, pop]
-    return namePopWeight
+    label, pop = label, pop
+    labels, weights = parse_user_quote_env("BIO_QUOTE_RACE", label, pop)
+    return [labels, weights]
 
 # Get list of U.S. population vs one education level, 25 and over
 def fetch_pop_education(gender= "f", state= 1, session= None):
@@ -109,8 +131,8 @@ def fetch_pop_education(gender= "f", state= 1, session= None):
     response = session.get(tmpAPI, params= params)
     tmpData = response.json()
     pop= [int(i) for i in tmpData[1][0: -1]]
-    namePopWeight= [label, pop]
-    return namePopWeight
+    labels, weights = parse_user_quote_env("BIO_QUOTE_EDUCATION", label, pop)
+    return [labels, weights]
 
 def fetch_pop_occupation(gender= "f", session= None):
     toGet= "group(B24125)"
@@ -125,9 +147,14 @@ def fetch_pop_occupation(gender= "f", session= None):
     variableURL= tmpAPI+"/variables.json"
     response = session.get(variableURL)
     variable = response.json()
-    lenOfData= len(data[0])//2-3
-    nameID= [data[0][i*2+4] for i in range(lenOfData)]
-    nameAmount=  [int(data[1][i*2+4]) for i in range(lenOfData)]
+    columns = data[0]
+    filtered_cols = [
+        col for col in columns 
+        if col != 'NAME' and col.endswith('E') 
+        and not col.endswith('EA') and not col.endswith('M') and not col.endswith('MA')
+    ]
+    nameID = filtered_cols
+    nameAmount = [int(data[1][columns.index(col)]) for col in filtered_cols]
     label= [variable["variables"][i[:-1]+"E"]["label"].split("!!")[-1] for i in nameID]
     namePopWeight= [label, nameAmount]
     return namePopWeight
@@ -151,18 +178,33 @@ def main():
     gender = generate_random_person()
     print("Fetching U.S. age data by gender...")
     agePopWeight= fetch_pop_age(gender, session)
+    print("Available age labels:")
+    for label in agePopWeight[0]:
+        print(f" - {label}")
     age= select_name_weighted(agePopWeight)
     print("Fetching U.S. income data...")
     incomePopWeight= fetch_family_income(session)
+    print("Available income labels:")
+    for label in incomePopWeight[0]:
+        print(f" - {label}")
     income= select_name_weighted(incomePopWeight)
     print("Fetching U.S. race data by state...")
     racePopWeight= fetch_pop_singleRace(int(stateID), session)
+    print("Available race labels:")
+    for label in racePopWeight[0]:
+        print(f" - {label}")
     race= select_name_weighted(racePopWeight)
     print("Fetching U.S. education data by state and gender...")
     eduPopWeight= fetch_pop_education(gender, int(stateID), session)
+    print("Available education labels:")
+    for label in eduPopWeight[0]:
+        print(f" - {label}")
     edu= select_name_weighted(eduPopWeight)
     print("Fetching U.S. occupation data by gender...")
     occupationPopWeight= fetch_pop_occupation(gender, session)
+    print("Available occupation labels:")
+    for label in occupationPopWeight[0]:
+        print(f" - {label}")
     occupation= select_name_weighted(occupationPopWeight)
 
     # update database
