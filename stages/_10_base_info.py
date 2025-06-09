@@ -169,7 +169,7 @@ def select_name_weighted(nameWeight):
 
 def print_labels():
     global list_only 
-    list_only= True
+    list_only = True
     main()
 
 
@@ -178,44 +178,39 @@ def main():
     cache_path = os.path.join(BUILD_DIR, 'request_cache')
     session = requests_cache.CachedSession(cache_path, expire_after=timedelta(hours=2))
 
-    print("Fetching U.S. population data by state...")
+    # print("Fetching U.S. population data by state...")
     states = fetch_state_populations(session)
-    print("Fetching U.S. population data by state...")
+    # print("Fetching U.S. population data by state...")
     state_name, _, stateID = select_state_weighted(states)
     gender = generate_random_person()
-    print("Fetching U.S. age data by gender...")
+    # print("Fetching U.S. age data by gender...")
     agePopWeight= fetch_pop_age(gender, session)
     age= select_name_weighted(agePopWeight)
-    print("Fetching U.S. income data...")
+    # print("Fetching U.S. income data...")
     incomePopWeight= fetch_family_income(session)
     income= select_name_weighted(incomePopWeight)
-    print("Fetching U.S. race data by state...")
+    # print("Fetching U.S. race data by state...")
     racePopWeight= fetch_pop_singleRace(int(stateID), session)
     race= select_name_weighted(racePopWeight)
-    print("Fetching U.S. education data by state and gender...")
+    # print("Fetching U.S. education data by state and gender...")
     eduPopWeight= fetch_pop_education(gender, int(stateID), session)
     edu= select_name_weighted(eduPopWeight)
-    print("Fetching U.S. occupation data by gender...")
+    # print("Fetching U.S. occupation data by gender...")
     occupationPopWeight= fetch_pop_occupation(gender, session)
     occupation= select_name_weighted(occupationPopWeight)
 
     # print labels and exit if called with --print-income-labels 
     if list_only:
-        print("Available age labels:")
         for label in agePopWeight[0]:
-            print(f" - {label}")
-        print("Available income labels:")
+            print(f"BIO_QUOTE_AGE_{normalize_label(label).upper()}")
         for label in incomePopWeight[0]:
-            print(f" - {label}")
-        print("Available race labels:")
+            print(f"BIO_QUOTE_INCOME_{normalize_label(label).upper()}")
         for label in racePopWeight[0]:
-            print(f" - {label}")
-        print("Available education labels:")
+            print(f"BIO_QUOTE_RACE_{normalize_label(label).upper()}")
         for label in eduPopWeight[0]:
-            print(f" - {label}")
-        print("Available occupation labels:")
+            print(f"BIO_QUOTE_EDUCATION_{normalize_label(label).upper()}")
         for label in occupationPopWeight[0]:
-            print(f" - {label}")
+            print(f"BIO_QUOTE_OCCUPATION_{normalize_label(label).upper()}")
         exit(0)
 
     # update database
