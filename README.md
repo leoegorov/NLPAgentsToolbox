@@ -36,7 +36,7 @@ pip3 install requests_cache pandas pyyaml openai
 
 The following global variables are read or set in some scripts:
 
-| var            | description                   | default                                 | [mk](tools/mkbio.py) | [ls](tools/lsbio.py) | [rm](tools/rmbio.py) | [db](stages/utils/dbcontroller.py) | [10](stages/_10-base_info.py) | [12](stages/_12-name.py)      | [99](stages/_99-biography.py)
+| var            | description                   | default                                 | [mk](tools/mkbio.py) | [ls](tools/lsbio.py) | [rm](tools/rmbio.py) | [db](stages/utils/dbcontroller.py) | [10](stages/_10_base_info.py) | [12](stages/_12_name.py)      | [99](stages/_99_biography.py)
 |----------------|-------------------------------|-----------------------------------------|-------|-------|-------|--------------|---------------|---------------|--------------------|
 | PROJECT_ROOT   | File path to top level        | `os.path.abspath`                       | rw    | rw    | rw    | -            | r             | r             | -                  |
 | BUILD_DIR      | File path to build directory  | build                                   | rw    | r     | r     | -            | r             | -             | -                  |
@@ -129,9 +129,9 @@ optional arguments:
 
 | Stage | Existing columns that can be accessed |
 |-|-|
-| _10-base_info | |
-| _12-name |  ``id`` ``age`` ``gender`` ``state`` ``income`` ``race`` ``education`` ``occupation`` |
-| _13-religion | ++ ``first_name`` ``middle_name (optional)`` ``last_name`` |
+| _10_base_info | |
+| _12_name |  ``id`` ``age`` ``gender`` ``state`` ``income`` ``race`` ``education`` ``occupation`` |
+| _13_religion | ++ ``first_name`` ``middle_name (optional)`` ``last_name`` |
 | _14.. | ++ ``religion`` |
 | _82.. | ++ ``role`` |
 | _83.. | ++ ``goal (optional)`` |

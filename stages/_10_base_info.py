@@ -8,8 +8,13 @@ import argparse
 import requests_cache # type: ignore
 from stages.utils.dbcontroller import update_db
 from collections import defaultdict
-
 import re
+
+os.environ.setdefault('API_CENSUS', 'https://api.census.gov/data/2020/dec/pl')
+API_CENSUS = os.environ['API_CENSUS']
+BUILD_DIR  = os.environ['BUILD_DIR']
+
+list_only = False
 
 def normalize_label(label):
     return re.sub(r'[^a-z0-9]+', '_', label.lower()).strip('_')
@@ -27,9 +32,6 @@ def parse_user_quote_env(prefix, labels, pops):
     adjusted = {normalize_label(lbl): pop / remaining_total * remaining for lbl, pop in zip(remaining_labels, remaining_pops)}
     full_dist = {**user_defined, **adjusted}
     return labels, [full_dist[normalize_label(label)] for label in labels]
-
-API_CENSUS = os.environ['API_CENSUS']
-BUILD_DIR  = os.environ['BUILD_DIR']
 
 # Get list of U.S. states and populations
 def fetch_state_populations(session= None):
@@ -165,8 +167,13 @@ def select_name_weighted(nameWeight):
     chosen_index = random.choices(range(len(names)), weights=weights)[0]
     return names[chosen_index]
 
-def main():
+def print_labels():
+    global list_only 
+    list_only= True
+    main()
 
+
+def main():
     # cache visited website for better performance
     cache_path = os.path.join(BUILD_DIR, 'request_cache')
     session = requests_cache.CachedSession(cache_path, expire_after=timedelta(hours=2))
@@ -178,34 +185,38 @@ def main():
     gender = generate_random_person()
     print("Fetching U.S. age data by gender...")
     agePopWeight= fetch_pop_age(gender, session)
-    print("Available age labels:")
-    for label in agePopWeight[0]:
-        print(f" - {label}")
     age= select_name_weighted(agePopWeight)
     print("Fetching U.S. income data...")
     incomePopWeight= fetch_family_income(session)
-    print("Available income labels:")
-    for label in incomePopWeight[0]:
-        print(f" - {label}")
     income= select_name_weighted(incomePopWeight)
     print("Fetching U.S. race data by state...")
     racePopWeight= fetch_pop_singleRace(int(stateID), session)
-    print("Available race labels:")
-    for label in racePopWeight[0]:
-        print(f" - {label}")
     race= select_name_weighted(racePopWeight)
     print("Fetching U.S. education data by state and gender...")
     eduPopWeight= fetch_pop_education(gender, int(stateID), session)
-    print("Available education labels:")
-    for label in eduPopWeight[0]:
-        print(f" - {label}")
     edu= select_name_weighted(eduPopWeight)
     print("Fetching U.S. occupation data by gender...")
     occupationPopWeight= fetch_pop_occupation(gender, session)
-    print("Available occupation labels:")
-    for label in occupationPopWeight[0]:
-        print(f" - {label}")
     occupation= select_name_weighted(occupationPopWeight)
+
+    # print labels and exit if called with --print-income-labels 
+    if list_only:
+        print("Available age labels:")
+        for label in agePopWeight[0]:
+            print(f" - {label}")
+        print("Available income labels:")
+        for label in incomePopWeight[0]:
+            print(f" - {label}")
+        print("Available race labels:")
+        for label in racePopWeight[0]:
+            print(f" - {label}")
+        print("Available education labels:")
+        for label in eduPopWeight[0]:
+            print(f" - {label}")
+        print("Available occupation labels:")
+        for label in occupationPopWeight[0]:
+            print(f" - {label}")
+        exit(0)
 
     # update database
     update_db("age", age)

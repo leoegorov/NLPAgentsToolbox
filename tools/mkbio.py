@@ -12,7 +12,10 @@ def main():
     parser = argparse.ArgumentParser(description='mkbio – make some American jurors')
     parser.add_argument('-n', '--num', action='store', type=int, default=1, help='Amount of jurors to generate')
     parser.add_argument('--version', action='version', version='mkbio v0.0')
+    parser.add_argument('--print-labels', action='store_true', help='Print available census labels and exit')
     args = parser.parse_args()
+
+    sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
     # Global variables
     PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -22,14 +25,19 @@ def main():
     os.environ.setdefault('BUILD_DIR', build_dir)
     database_file = os.path.join(build_dir, 'juror.db')
     os.environ.setdefault('DATABASE_FILE', database_file)
-    os.environ.setdefault('API_CENSUS', 'https://api.census.gov/data/2020/dec/pl')
+
+    if args.print_labels:
+        from stages._10_base_info import print_labels
+        print_labels()
+        return
 
     stages_dir = os.path.join(os.path.dirname(__file__), '..', 'stages')
     stages_dir = os.path.abspath(stages_dir)
     stage_files = []
 
     for filename in os.listdir(stages_dir):
-        match = re.match(r'_([0-9]{2})-.*\.py$', filename)
+        # Match files starting with underscore, two digits, underscore, then rest, ending with .py
+        match = re.match(r'_([0-9]{2})_.*\.py$', filename)
         if match:
             stage_files.append((int(match.group(1)), filename))
 
@@ -52,7 +60,7 @@ def main():
         total_stages = 99
         for index, filename in sorted(stage_files):
             stage_number = index
-            stage_name = os.path.splitext(filename)[0].split('-', 1)[1].replace('_', ' ').title()
+            stage_name = os.path.splitext(filename)[0].split('_', 1)[1].replace('_', ' ').title()
             print(f'\nStage {stage_number} of {total_stages}: {stage_name}')
             
             module_path = os.path.join(stages_dir, filename)
