@@ -87,7 +87,7 @@ sk-proj-....
 ### Generate juror
 ```
 ./tools/mkbio.py -h     
-usage: mkbio.py [-h] [-n NUM] [--version] [--print-labels]
+usage: mkbio.py [-h] [-n NUM] [--version] [--print-labels] [-BIO_QUOTE_{census type}_{census value} BIO_VALUE]
 
 mkbio – make some American jurors
 
@@ -95,8 +95,11 @@ optional arguments:
   -h, --help         show this help message and exit
   -n NUM, --num NUM  Amount of jurors to generate
   --version          show program's version number and exit
-  --print-labels     Print available census labels and exit
+  --print-labels     Print available census labels (BIO_QUOTE_{census type}_{census value}) and exit
+  -BIO_QUOTE_{census type}_{census value} BIO_VALUE, --bio_value BIO_VALUE 
+                     Set percentage of certain census label. 0 means avoid this census label. Accept multiple parses.
 ```
+
 
 ### List columns, rows, all; Export YAML, JSON; Query SQL
 ```
