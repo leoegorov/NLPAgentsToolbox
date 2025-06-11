@@ -6,7 +6,7 @@ import os
 import sys
 import argparse
 import requests_cache # type: ignore
-from stages.utils.dbcontroller import update_db
+from stages.utils.dbcontroller import update_db, select_bio_quote
 from collections import defaultdict
 import re
 
@@ -172,6 +172,26 @@ def print_labels():
     list_only = True
     main()
 
+def rebuild_quote_pop_weight(key, PopWeight):
+    tmp_quote= select_bio_quote(key)
+    if tmp_quote== None:
+        return PopWeight
+    labels= [i.upper() for i in PopWeight[0]]
+    splitTmp= tmp_quote.split("(-)")
+    if len(splitTmp)>1:
+        for item in splitTmp[1:]:
+            if len(item):
+                try:
+                    index_tmp = labels.index(item)
+                    PopWeight[1][index_tmp]= 0
+                except ValueError:
+                    raise ValueError(f"Bio type {key}, {item} is incorrect input!")
+    else:
+        if tmp_quote not in labels:
+            raise ValueError(f"Bio type {key}, {tmp_quote} is incorrect input!")
+        orin_index= labels.index(tmp_quote)
+        PopWeight= [[PopWeight[0][orin_index]], [1]] 
+    return PopWeight
 
 def main():
     # cache visited website for better performance
@@ -185,32 +205,37 @@ def main():
     gender = generate_random_person()
     # print("Fetching U.S. age data by gender...")
     agePopWeight= fetch_pop_age(gender, session)
+    agePopWeight= rebuild_quote_pop_weight("AGE", agePopWeight)
     age= select_name_weighted(agePopWeight)
     # print("Fetching U.S. income data...")
     incomePopWeight= fetch_family_income(session)
+    incomePopWeight= rebuild_quote_pop_weight("INCOME", incomePopWeight)
     income= select_name_weighted(incomePopWeight)
     # print("Fetching U.S. race data by state...")
     racePopWeight= fetch_pop_singleRace(int(stateID), session)
+    racePopWeight= rebuild_quote_pop_weight("RACE", racePopWeight)
     race= select_name_weighted(racePopWeight)
     # print("Fetching U.S. education data by state and gender...")
     eduPopWeight= fetch_pop_education(gender, int(stateID), session)
+    eduPopWeight= rebuild_quote_pop_weight("EDUCATION", eduPopWeight)
     edu= select_name_weighted(eduPopWeight)
     # print("Fetching U.S. occupation data by gender...")
     occupationPopWeight= fetch_pop_occupation(gender, session)
+    occupationPopWeight= rebuild_quote_pop_weight("OCCUPATION", occupationPopWeight)
     occupation= select_name_weighted(occupationPopWeight)
 
     # print labels and exit if called with --print-income-labels 
     if list_only:
         for label in agePopWeight[0]:
-            print(f"BIO_QUOTE_AGE_{normalize_label(label).upper()}")
+            print(f"BIO_QUOTE_AGE_{normalize_label(label.upper())}")
         for label in incomePopWeight[0]:
-            print(f"BIO_QUOTE_INCOME_{normalize_label(label).upper()}")
+            print(f"BIO_QUOTE_INCOME_{normalize_label(label.upper())}")
         for label in racePopWeight[0]:
-            print(f"BIO_QUOTE_RACE_{normalize_label(label).upper()}")
+            print(f"BIO_QUOTE_RACE_{normalize_label(label.upper())}")
         for label in eduPopWeight[0]:
-            print(f"BIO_QUOTE_EDUCATION_{normalize_label(label).upper()}")
+            print(f"BIO_QUOTE_EDUCATION_{normalize_label(label.upper())}")
         for label in occupationPopWeight[0]:
-            print(f"BIO_QUOTE_OCCUPATION_{normalize_label(label).upper()}")
+            print(f"BIO_QUOTE_OCCUPATION_{normalize_label(label.upper())}")
         exit(0)
 
     # update database
