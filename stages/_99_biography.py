@@ -36,6 +36,7 @@ def main():
         print(f"\033[93mError running tools/lsbio.py: {result.stderr}\033[0m")
         return
     cols = result.stdout.strip()
+
     while True:
         biography = ask_chatgpt(f"Write a short biography (and write nothing else) for this citizen:\n {cols}")
         print(f"Biography: {biography}")

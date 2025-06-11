@@ -4,10 +4,7 @@ import sys
 
 DATABASE_FILE = os.environ.get('DATABASE_FILE', 'juror.db')
 
-
-
 def update_db(column, value, id=None):
-    
     conn = sqlite3.connect(DATABASE_FILE)
     cur = conn.cursor()
 
@@ -71,57 +68,3 @@ def get_val(column, id=None):
         return None
     finally:
         conn.close()
-
-    
-
-def update_db_bio_quote( key_part, value_part):
-    conn = sqlite3.connect(DATABASE_FILE)
-    cur = conn.cursor()
-    # Ensure the table exists
-    cur.execute('''
-        CREATE TABLE IF NOT EXISTS BIO_QUOTE (
-            key_part TEXT NOT NULL PRIMARY KEY,
-            value_part TEXT NOT NULL
-        )
-    ''')
-    try:
-        cur.execute("INSERT OR REPLACE INTO BIO_QUOTE (key_part, value_part) VALUES (?, ?)",
-                       (key_part, value_part))
-        conn.commit()
-
-    except sqlite3.Error as e:
-        print(f"Error inserting data: {e}")
-    finally:
-        if conn:
-            conn.close()
-
-def select_bio_quote( search_key):
-    """
-    Selects and prints the value associated with a specific key_part.
-    """
-    conn = None
-    try:
-        conn = sqlite3.connect(DATABASE_FILE)
-        cursor = conn.cursor()
-        cursor.execute('''
-        CREATE TABLE IF NOT EXISTS BIO_QUOTE (
-            key_part TEXT NOT NULL PRIMARY KEY,
-            value_part TEXT NOT NULL
-        )
-        ''')
-        
-        # SQL query to select value_part where key_part matches search_key
-        cursor.execute("SELECT value_part FROM BIO_QUOTE WHERE key_part = ?", (search_key,))
-        result = cursor.fetchone() # fetchone() retrieves the first matching row
-
-        if result:
-            update_db_bio_quote( search_key, "other(-)")
-            return result[0] # Return the value part
-        else:
-            return None
-    except sqlite3.Error as e:
-        print(f"Error selecting key: {e}")
-        return None
-    finally:
-        if conn:
-            conn.close()
