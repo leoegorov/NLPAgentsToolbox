@@ -1,0 +1,40 @@
+name: Expire Deployments After 65 Minutes
+
+on:
+  schedule:
+    - cron: '*/15 * * * *'  # Every 15 minutes
+  workflow_dispatch:        # Optional manual trigger
+
+jobs:
+  expire_old_deployments:
+    runs-on: ubuntu-latest
+    permissions:
+      deployments: write
+      contents: read
+
+    steps:
+      - name: Deactivate deployments older than 65 minutes
+        run: |
+          REPO="${{ github.repository }}"
+          NOW=$(date -u +%s)
+
+          deployments=$(gh api "repos/$REPO/deployments" --paginate)
+
+          echo "$deployments" | jq -c '.[]' | while read -r dep; do
+            id=$(echo "$dep" | jq -r '.id')
+            created_at=$(echo "$dep" | jq -r '.created_at')
+            statuses_url=$(echo "$dep" | jq -r '.statuses_url')
+
+            created_seconds=$(date -d "$created_at" +%s)
+            age_minutes=$(( (NOW - created_seconds) / 60 ))
+
+            if [ "$age_minutes" -gt 65 ]; then
+              echo "Marking deployment $id as inactive (age: $age_minutes min)"
+              gh api "$statuses_url" \
+                -X POST \
+                -f state=inactive \
+                -f description="Auto-expired after 65 minutes"
+            fi
+          done
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
