@@ -8,7 +8,8 @@ def getInput():
     while True:
         full_name = "example"
         print(f"Suggested name: {full_name}")
-        choice = input("Accept (A), new generated suggestion (n) or enter name of your own (e)? ").strip() or 'A'
+        #choice = input("Accept (A), new generated suggestion (n) or enter name of your own (e)? ").strip() or 'A'
+        choice = 'A'
         if choice == 'A':
             print(f"Name accepted: {full_name}")
             return full_name

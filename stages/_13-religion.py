@@ -33,8 +33,8 @@ def getReligion():
         suggestion = suggest_religion()
         prob = dict(RELIGIONS)[suggestion]
         print(f"Suggested religion: {suggestion} ({round(prob * 100, 2)}%)")
-        choice = input("Accept (A), new suggestion (n), or enter your own (e)? ").strip() or 'A'
-
+        #choice = input("Accept (A), new suggestion (n), or enter your own (e)? ").strip() or 'A'
+        choice = 'A'
         if choice == 'A':
             print(f"Religion accepted: {suggestion}")
             return suggestion
