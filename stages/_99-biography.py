@@ -40,17 +40,33 @@ def main():
 
     while True:
         msgToChatGPT = f"Write a short biography (and write nothing else) for this citizen:\n {cols}. " \
-                       f"I have some new features I want this citizen to have, if you have a contradiction " \
-                       f"from previous data I gave you, please take the new data I will give you. " \
-                       f"If you want you can change the name according to the gender. I want this citizen to be:" \
+                       f"I have some new features I want this biography to have, if you have a contradiction " \
+                       f"from previous data, please take the new data I will give you. Make sure that all the story " \
+                       f"makes sense. Change it to make sense if there is some contradiction." \
+                       f"If you want you can change the name according to the gender. I want this biography to be:" \
                        f"{get_next_features()}"
 
         biography = ask_chatgpt(msgToChatGPT)
         print(f"Biography: {biography}")
-        choice = input("Accept (A), new generated suggestion (n) or enter name of your own (e)? ").strip() or 'A'
+        choice = input("\nAccept (A), new generated suggestion (n), enter name of your own (e)? if you want to "
+                       "change something specific: just write it in a simple sentence (Example: Please change his "
+                       "name to be ..):\n ").strip() or 'A'
         if choice == 'e':
             biography = input("Enter biography manually: ")
         elif choice == 'A':
+            break
+        elif choice == 'n':
+            continue
+        else:
+            msgToChatGPT = f"I will provide to you a biography and a changing requirement. Please change the biography" \
+                           f" according to the new requirement. Make sure that all the story makes sense. Change " \
+                           f"it to make sense if there is some contradiction" \
+                           f"Only write the new biography and nothing else. " \
+                           f"Biography : {biography}" \
+                           f"New requirement: {choice}" \
+                           f"If the requirement is meaningless just return the previous biography."
+            biography = ask_chatgpt(msgToChatGPT)
+            print(f"Changed Biography: {biography}")
             break
 
     update_db('biography', biography)
