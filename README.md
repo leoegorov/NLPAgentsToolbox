@@ -6,7 +6,7 @@ personalities suitable for juror duty in the US.
 ## Quick start on BGU slurm
 > [!WARNING]
 > **Don't commit to the repo on slurm!**  
-> Changes to /sise/Yalla_work/nlpsd/NLPAgentsToolbox will be reset every hour.
+> Changes to /sise/Yalla_work/data/nlpsd/NLPAgentsToolbox will be reset every hour.
 
 ```
 source .venv/bin/activate
@@ -55,7 +55,7 @@ The following global variables are read or set in some scripts:
 | DATABASE_FILE  | File path to juror.db         | juror.db                                | rw    | rw    | rw    | r            | -             | -             | -                  |
 | EXPORT_JSON    | File path to export.json      | jurors.json                             | -     | rw    | -     | -            | -             | -             | -                  |
 | EXPORT_YAML    | File path to export.yaml      | jurors.yaml                             | -     | rw    | -     | -            | -             | -             | -                  |
-| API_CENSUS     | Connection to US Census DB    | [Census API](https://api.census.gov/data/2020/dec/pl) | r     | -     | -     | -            | r             | -             | -                  |
+| API_CENSUS     | Connection to US Census DB    | [Census API](https://api.census.gov/data/2020/dec/pl) | r | - | - | -          | r             | -             | -                  |
 | OPENAI_API_KEY | OpenAI API key for prompt     | `project_root/api_key`                  | -     | -     | -     | -            | -             | -             | r                  |
 
 > [!TIP]
