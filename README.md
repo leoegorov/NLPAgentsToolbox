@@ -139,7 +139,7 @@ optional arguments:
 | _12_name |  ``id`` ``age`` ``gender`` ``state`` ``income`` ``race`` ``education`` ``occupation`` |
 | _13_religion | ++ ``first_name`` ``middle_name (optional)`` ``last_name`` |
 | _14.. | ++ ``religion`` |
-| _42.. | ++ ``prejudice`` |
+| _42.. | ++ ``bias_against_<race> (multiple) (optional)`` |
 | _82.. | ++ ``role`` |
 | _83.. | ++ ``goal (optional)`` |
 | _90 | all non-LLM generated fields |
