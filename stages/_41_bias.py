@@ -20,7 +20,7 @@ def collect_biases():
             try:
                 value_f = float(value)
                 if 0.0 <= value_f <= 1.0:
-                    biases[key] = value_f
+                    biases[key] = value_f  # Store as float only
                     break
                 else:
                     print("Value must be between 0.0 and 1.0.")
@@ -32,7 +32,7 @@ def main():
     biases = collect_biases()
     if biases:
         for key, value in biases.items():
-            update_db(key, value)
+            update_db(key, float(value))  # Ensure float is passed
     else:
         print("No biases entered.")
 
