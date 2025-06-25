@@ -17,12 +17,8 @@ less build/jurors.yaml
 
 ### Customizing suggested distribution
 Categories are presented by the procedural interactive juror generation tool based on available US 2020 census database distribution when available, or randomly.  
-Users can modify the frequency of individual presented categories by exporting variables before running `tools/mkbio.py`:  
-```
-export BIO_QUOTE_<CATEGORY>=<VALUE>
-```
-with `<VALUE>` being a chance between 0.0 and 1.0.  
-A list of every available `<CATEGORY>` can be displayed with  
+Users can modify the frequency of individual presented categories by uncommenting the top-level file `config-txt` before running `tools/mkbio.py` with the assigned variable being a chance between 0.0 and 1.0.  
+An up-to-date list of every available config key can be displayed with  
 ```
 mkbio.py --print-labels
 ```
@@ -59,7 +55,7 @@ The following global variables are read or set in some scripts:
 | OPENAI_API_KEY | OpenAI API key for prompt     | `project_root/api_key`                  | -     | -     | -     | -            | -             | -             | r                  |
 
 > [!TIP]
-> `mkbio` reads a whole range of additional variables: see above section ["Customizing suggested distribution"](#customizing-suggested-distribution)
+> `mkbio` processes a whole range of additional not exported variables: see above section ["Customizing suggested distribution"](#customizing-suggested-distribution)
 
 ### Add OpenAI API key
 #### Recommended:  
@@ -143,6 +139,7 @@ optional arguments:
 | _12_name |  ``id`` ``age`` ``gender`` ``state`` ``income`` ``race`` ``education`` ``occupation`` |
 | _13_religion | ++ ``first_name`` ``middle_name (optional)`` ``last_name`` |
 | _14.. | ++ ``religion`` |
+| _42.. | ++ ``prejudice`` |
 | _82.. | ++ ``role`` |
 | _83.. | ++ ``goal (optional)`` |
 | _90 | all non-LLM generated fields |
