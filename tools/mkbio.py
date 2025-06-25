@@ -31,6 +31,29 @@ def main():
         print_labels()
         return
 
+    # Read config.txt and set/unset environment variables
+    config_path = os.path.join(PROJECT_ROOT, 'config.txt')
+    if os.path.exists(config_path):
+        with open(config_path, 'r') as f:
+            for line in f:
+                line = line.strip()
+                if not line:
+                    continue
+                if line.startswith('#'):
+                    # Unset the variable if commented and looks like #KEY=...
+                    var_line = line[1:].strip()
+                    if '=' in var_line:
+                        var_name = var_line.split('=', 1)[0].strip()
+                        if var_name:
+                            os.environ.pop(var_name, None)
+                    continue
+                if '=' in line:
+                    var_name, var_value = line.split('=', 1)
+                    var_name = var_name.strip()
+                    var_value = var_value.strip()
+                    if var_name:
+                        os.environ[var_name] = var_value
+
     stages_dir = os.path.join(os.path.dirname(__file__), '..', 'stages')
     stages_dir = os.path.abspath(stages_dir)
     stage_files = []
